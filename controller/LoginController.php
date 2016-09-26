@@ -49,7 +49,7 @@ class LoginController {
       $_SESSION['isLoggedIn'] = true;
       if ($this->lw->isKeepingLogin()) {
         $_SESSION['message'] = 'Welcome and you will be remembered';
-      } else if ($this->lw->isLoggingIn()) {
+      } else if (!$this->sm->getIsLoggedIn()) {
         $_SESSION['message'] = 'Welcome';
       }
     } else {
