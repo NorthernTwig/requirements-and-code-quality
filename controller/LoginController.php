@@ -8,7 +8,7 @@ require_once("model/FlashModel.php");
 require_once("model/SessionModel.php");
 
 class LoginController {
-//TESTG
+
   public function __construct($flashModel, $sessionModel) {
     $this->lw = new \view\LoginView();
     $this->sm = $sessionModel;
@@ -51,6 +51,8 @@ class LoginController {
       } else {
         $_SESSION['message'] = 'Welcome';
       }
+    } else {
+      $_SESSION['message'] = 'Wrong name or password';
     }
 
   }
