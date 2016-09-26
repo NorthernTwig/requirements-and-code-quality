@@ -28,7 +28,7 @@ class LoginController {
         $_SESSION['message'] = $e->getMessage();
       } finally {
         $this->lw->toLayoutView($this->fm, $this->sm);
-        if ($this->lw->isLoggingIn() || $this->lw->isLoggingOut()) {
+        if ($this->lw->isLoggingOut()) {
           header('Location: /');
           exit();
         }
