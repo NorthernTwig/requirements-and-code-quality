@@ -17,6 +17,7 @@ class LoginController {
       try {
         if ($this->lw->isLoggingIn()) {
           $this->username = $this->lw->getUsername();
+          $_SESSION['username'] = $this->lw->getUsername();
           $this->password = $this->lw->getPassword();
           $this->compareEnteredCredentials();
         } else if ($this->lw->isLoggingOut() && $this->sm->getIsLoggedIn()) {

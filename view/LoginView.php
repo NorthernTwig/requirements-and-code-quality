@@ -15,6 +15,12 @@ class LoginView {
 	private static $keep = 'LoginView::KeepMeLoggedIn';
 	private static $messageId = 'LoginView::Message';
 
+	public function __construct() {
+		if (!isset($_SESSION['username'])) {
+			$_SESSION['username'] = '';
+		}
+	}
+
 	//iseoighse
 	public function toLayoutView($flashModel, $sessionModel) {
 		$this->sessionModel = $sessionModel;
@@ -42,7 +48,7 @@ class LoginView {
 						<p id="' . self::$messageId . '">' . $message . '</p>
 
 						<label for="' . self::$name . '">Username :</label>
-						<input type="text" id="' . self::$name . '" name="' . self::$name . '" value="' . $this->setUsernameValue() . '" />
+						<input type="text" id="' . self::$name . '" name="' . self::$name . '" value="' . $_SESSION['username'] . '" />
 
 						<label for="' . self::$password . '">Password :</label>
 						<input type="password" id="' . self::$password . '" name="' . self::$password . '" />
@@ -72,14 +78,13 @@ class LoginView {
 	}
 
 	public function getUsername() {
-		if (strlen($_POST[self::$name]) == 0) {
-			throw new \Exception('Username is missing');
-		}
 
-		if (isset($_POST[self::$name])) {
-			$_SESSION['username'] = $_POST[self::$name];
-		}
+			if (strlen($_POST[self::$name]) == 0) {
+				throw new \Exception('Username is missing');
+			}
+
 		return $_POST[self::$name];
+
 	}
 
 	public function getPassword() {
