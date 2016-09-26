@@ -42,7 +42,7 @@ class LoginView {
 						<p id="' . self::$messageId . '">' . $message . '</p>
 
 						<label for="' . self::$name . '">Username :</label>
-						<input type="text" id="' . self::$name . '" name="' . self::$name . '" value="' . $_SESSION['username'] . '" />
+						<input type="text" id="' . self::$name . '" name="' . self::$name . '" value="' . $this->setUsernameValue() . '" />
 
 						<label for="' . self::$password . '">Password :</label>
 						<input type="password" id="' . self::$password . '" name="' . self::$password . '" />
@@ -66,9 +66,9 @@ class LoginView {
 	}
 
 	private function setUsernameValue() {
-		// if (isset($_POST[self::$name])) {
-		$_SESSION['Username'] = $_POST[self::$name];
-		// }
+		if (isset($_POST[self::$name])) {
+			return $_POST[self::$name];
+		}
 	}
 
 	public function getUsername() {
