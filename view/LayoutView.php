@@ -48,7 +48,11 @@ class LayoutView {
     if ($this->sessionModel->getIsLoggedIn()) {
       return '';
     } else {
-      return '<a href="?register">Register a new user</a>';
+      if (isset($_GET['register'])) {
+        return '<a href="/">Back to login</a>';
+      } else {
+        return '<a href="?register">Register a new user</a>';
+      }
     }
   }
 
