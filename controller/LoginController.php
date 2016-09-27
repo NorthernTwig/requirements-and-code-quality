@@ -18,22 +18,22 @@ class LoginController {
 
       try {
 
-        if (isset($_COOKIE['Username'])) {
+        if (isset($_COOKIE['Username']) && !$this->lw->isLoggingOut()) {
           self::$username = $_COOKIE['Username'];
           self::$password = $_COOKIE['Password'];
           $this->compareEnteredCredentials();
-        }
-
-        if ($this->lw->isLoggingIn() && !$this->sm->getIsLoggedIn()) {
-          $this->setUsername();
-          $this->setPassword();
-          $this->compareEnteredCredentials();
-          $this->storeUserCredentialsInCookie();
-        } else if ($this->lw->isLoggingOut() && $this->sm->getIsLoggedIn()) {
-          $this->removeUserCredentialsInCookie();
-          $_SESSION['username'] = '';
-          $_SESSION['isLoggedIn'] = false;
-          $_SESSION['message'] = 'Bye bye!';
+        } else {
+          if ($this->lw->isLoggingIn() && !$this->sm->getIsLoggedIn()) {
+            $this->setUsername();
+            $this->setPassword();
+            $this->compareEnteredCredentials();
+            $this->storeUserCredentialsInCookie();
+          } else if ($this->lw->isLoggingOut() && $this->sm->getIsLoggedIn()) {
+            $this->removeUserCredentialsInCookie();
+            $_SESSION['username'] = '';
+            $_SESSION['isLoggedIn'] = false;
+            $_SESSION['message'] = 'Bye bye!';
+          }
         }
 
       } catch (\Exception $e) {
@@ -41,7 +41,7 @@ class LoginController {
         $_SESSION['message'] = $e->getMessage();
       } finally {
         $this->lw->toLayoutView($this->fm, $this->sm);
-        if ($this->lw->isLoggingIn() || $this->lw->isLoggingOut()) {
+        if ($this->compareEnteredCredentials() || $this->lw->isLoggingOut()) {
           header('Location: /');
           exit();
         }
@@ -56,19 +56,25 @@ class LoginController {
   private function compareEnteredCredentials() {
 
     $existingUsers = $this->getExistingUsers();
+    $testing = false;
 
     if ($existingUsers['username'] == self::$username && $existingUsers['password'] == self::$password) {
       $_SESSION['isLoggedIn'] = true;
       if ($this->lw->isKeepingLogin()) {
         $_SESSION['message'] = 'Welcome and you will be remembered';
+        $testing = true;
       } else if (!$this->sm->getIsLoggedIn() && isset($_COOKIE['Username'])) {
         $_SESSION['message'] = 'Welcome with cookie';
+        $testing = true;
       } else if (!$this->sm->getIsLoggedIn()) {
         $_SESSION['message'] = 'Welcome';
+        $testing = true;
       }
-    } else {
+    } else if (strlen(self::$password) > 0 || strlen(self::$username) > 0) {
       $_SESSION['message'] = 'Wrong name or password';
     }
+
+    return $testing;
 
   }
 
