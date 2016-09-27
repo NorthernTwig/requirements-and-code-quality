@@ -21,7 +21,7 @@ class LoginView {
 		}
 	}
 
-	public function toLayoutView($flashModel, $sessionModel) {
+	public function loginToLayoutView($flashModel, $sessionModel) {
 		$this->sessionModel = $sessionModel;
 		$lv = new LayoutView($sessionModel);
 		$this->flashModel = $flashModel;

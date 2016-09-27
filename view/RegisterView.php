@@ -11,7 +11,11 @@ class RegisterView {
 	private static $passwordRepeat = 'RegisterView::PasswordRepeat';
 	private static $message = '';
 
-	public function __construct($sessionModel) {
+	public function __construct() {
+		//EAT
+	}
+
+	public function registerToLayoutView($flashModel, $sessionModel) {
 		$rv = new LayoutView($sessionModel);
 		$rv->toOutputBuffer($this->generateRegisterForm());
 	}
@@ -24,7 +28,7 @@ class RegisterView {
 		<legend>Register a new user - Write username and password</legend>
 		<p id="' . self::$messageId . '">' . $this->getMessage() . '</p>
 		<label for="' . self::$name . '">Username :</label>
-		<input type="text" size="20" name="' . self::$name . '" id="' . self::$name . '" value="Reg">
+		<input type="text" size="20" name="' . self::$name . '" id="' . self::$name . '" value="">
 		<br>
 		<label for="' . self::$password . '">Password  :</label>
 		<input type="password" size="20" name="' . self::$password . '" id="' . self::$password . '" value="">
@@ -39,9 +43,39 @@ class RegisterView {
 	}
 
 	private function getMessage() {
-		return '';
+		return self::$message;
 	}
 
+	public function checkRegisterUsername() {
+
+		if (isset($_POST[self::$name])) {
+			if (strlen($_POST[self::$name]) < 3) {
+				self::$message .= 'Username has too few characters, at least 3 characters.<br>';
+			}
+
+			return $_POST[self::$name];
+		}
+
+	}
+
+	public function checkRegisterPassword() {
+		if (isset($_POST[self::$password])) {
+
+			if (strlen($_POST[self::$password]) < 6) {
+				self::$message .= 'Password has too few characters, at least 6 characters.<br>';
+			}
+
+			return $_POST[self::$password];
+		}
+	}
+
+	public function passwordsMatch() {
+		if (isset($_POST[self::$password]) && isset($_POST[self::$passwordRepeat])) {
+			if ($_POST[self::$password] !== $_POST[self::$passwordRepeat]) {
+				self::$message .= 'Passwords do not match.';
+			}
+		}
+	}
 
 	// public function render() {
 	// 	echo '<h1>Register</h1>';

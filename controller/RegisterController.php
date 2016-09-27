@@ -10,9 +10,24 @@ require_once("model/SessionModel.php");
 class RegisterController {
 
   public function __construct($flashModel, $sessionModel) {
-    $rv = new \view\RegisterView($sessionModel);
+    $this->rw = new \view\RegisterView();
     $this->sm = $sessionModel;
     $this->fm = $flashModel;
+
+    try {
+      $this->rw->checkRegisterUsername();
+      $this->rw->checkRegisterPassword();
+      $this->rw->passwordsMatch();
+
+    } catch (\Exception $e) {
+      $_SESSION['message'] = $e->getMessage();
+    } finally {
+      $this->rw->registerToLayoutView($this->fm, $this->sm);
+      // if ($this->compareEnteredCredentials() || $this->lw->isLoggingOut()) {
+      //   header('Location: /');
+      //   exit();
+      // }
+    }
 
   }
 
