@@ -94,11 +94,7 @@ class LoginView {
 	}
 
 	public function isLoggingIn() {
-		if (isset($_POST[self::$login])) {
-			return true;
-		} else {
 			return isset($_POST[self::$login]);
-		}
 	}
 
 	public function isLoggingOut() {
