@@ -11,10 +11,6 @@ class RegisterView {
 	private static $passwordRepeat = 'RegisterView::PasswordRepeat';
 	private static $message = '';
 
-	public function __construct() {
-		//EAT
-	}
-
 	public function registerToLayoutView($flashModel, $sessionModel) {
 		$rv = new LayoutView($sessionModel);
 		$rv->toOutputBuffer($this->generateRegisterForm());
@@ -76,81 +72,5 @@ class RegisterView {
 			}
 		}
 	}
-
-	// public function render() {
-	// 	echo '<h1>Register</h1>';
-	// }
-
-
-	// public function response() {
-	//
-	// 	if (isset($_POST[self::$name])) {
-	// 		$this->setMessage();
-	// 	}
-	//
-	// 	$response = $this->generateRegisterForm(self::$message);
-	//
-	// 	return $response;beautif
-	//
-	// }
-
-
-	// private function setMessage() {
-	//
-	// 	if (!$this->usernameCheck()) {
-	// 		self::$message = 'Username has too few characters, at least 3 characters.<br>';
-	// 	}
-	//
-	// 	if (!$this->passwordCheck()) {
-	// 		self::$message .= 'Password has too few characters, at least 6 characters.<br>';
-	// 	}
-	//
-	// 	if (!$this->passwordMatch()) {
-	// 		self::$message .= 'Passwords do not match.';
-	// 	}
-	//
-	// }
-	//
-	// private function () {
-	// 	$name = "";
-	// 	if (isset($_POST[self::$name])) {
-	// 		$name = $_POST[self::$name];
-	// 	}
-	//
-	// 	return $name;
-	// }
-	//
-	// private function passwordCheck() {
-	// 	$validPassword = false;
-	// 	if (isset($_POST[self::$password])) {
-	// 		if (strlen($_POST[self::$password]) >= 6) {
-	// 			$validPassword = true;
-	// 		}
-	// 	}
-	// 	return $validPassword;
-	// }
-	//
-	// private function usernameCheck() {
-	// 	$validUsername = false;
-	//
-	// 	if (isset($_POST[self::$name])) {
-	// 		if (strlen($_POST[self::$name]) >= 3) {
-	// 			$validUsername = true;
-	// 		}
-	// 	}
-	//
-	// 	return $validUsername;
-	// }
-	//
-	// private function passwordMatch() {
-	// 	$matching = false;
-	// 	if (isset($_POST[self::$password]) && isset($_POST[self::$passwordRepeat])) {
-	// 		if ($_POST[self::$password] == $_POST[self::$passwordRepeat]) {
-	// 			$matching = true;
-	// 		}
-	// 	}
-	// 	return $matching;
-	// }
-
 
 }
