@@ -60,13 +60,15 @@ class LoginController {
 
     if ($existingUsers['username'] == self::$username && $existingUsers['password'] == self::$password) {
       $_SESSION['isLoggedIn'] = true;
-      $testing = true;
       if ($this->lw->isKeepingLogin()) {
         $_SESSION['message'] = 'Welcome and you will be remembered';
+        $testing = true;
       } else if (!$this->sm->getIsLoggedIn() && isset($_COOKIE['Username'])) {
         $_SESSION['message'] = 'Welcome back with cookie';
+        $testing = true;
       } else if (!$this->sm->getIsLoggedIn()) {
         $_SESSION['message'] = 'Welcome';
+        $testing = true;
       }
     } else if (strlen(self::$password) > 0 || strlen(self::$username) > 0) {
       $_SESSION['message'] = 'Wrong name or password';
