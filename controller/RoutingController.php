@@ -22,7 +22,7 @@ class RoutingController {
         new LoginController($this->fm, $this->sm);
         break;
       case true:
-        new RegisterController();
+        new RegisterController($this->fm, $this->sm);
         break;
     }
   }

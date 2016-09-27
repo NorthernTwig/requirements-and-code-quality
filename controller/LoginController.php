@@ -20,7 +20,9 @@ class LoginController {
           $_SESSION['username'] = $this->lw->getUsername();
           $this->password = $this->lw->getPassword();
           $this->compareEnteredCredentials();
+          $this->storeUserCredentialsInCookie();
         } else if ($this->lw->isLoggingOut() && $this->sm->getIsLoggedIn()) {
+          $this->removeUserCredentialsInCookie();
           $_SESSION['username'] = '';
           $_SESSION['isLoggedIn'] = false;
           $_SESSION['message'] = 'Bye bye!';
@@ -56,6 +58,32 @@ class LoginController {
       $_SESSION['message'] = 'Wrong name or password';
     }
 
+  }
+
+  private function storeUserCredentialsInCookie() {
+    $this->setUsernameCookie();
+    $this->setPasswordCookie();
+  }
+
+  private function removeUserCredentialsInCookie() {
+    $this->removeUsernameCookie();
+    $this->removePasswordCookie();
+  }
+
+  private function setUsernameCookie() {
+    setcookie("Username", $this->username, time()+36000);
+  }
+
+  private function setPasswordCookie() {
+    setcookie("Password", $this->password, time()+36000);
+  }
+
+  private function removeUsernameCookie() {
+    setcookie("Username", NULL, time()-1);
+  }
+
+  private function removePasswordCookie() {
+    setcookie("Password", NULL, time()-1);
   }
 
 }
