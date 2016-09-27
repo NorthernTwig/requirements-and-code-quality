@@ -69,6 +69,12 @@ class LoginView {
 			</form>
 		';
 	}
+	//
+	// private function getLastEnteredUsername() {
+	// 	$username = $_SESSION['username'];
+	// 	$_SESSION['username'] = '';
+	// 	return $username;
+	// }
 
 	private function setUsernameValue() {
 		if (isset($_POST[self::$name])) {

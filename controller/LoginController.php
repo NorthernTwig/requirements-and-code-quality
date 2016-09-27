@@ -20,7 +20,6 @@ class LoginController {
         if ($this->lw->isLoggingIn()) {
           $this->setUsername();
           $this->setPassword();
-          $_SESSION['username'] = self::$username;
           $this->compareEnteredCredentials();
           $this->storeUserCredentialsInCookie();
         } else if ($this->lw->isLoggingOut() && $this->sm->getIsLoggedIn()) {
@@ -30,6 +29,7 @@ class LoginController {
           $_SESSION['message'] = 'Bye bye!';
         }
       } catch (\Exception $e) {
+        $_SESSION['username'] = self::$username;
         $_SESSION['message'] = $e->getMessage();
       } finally {
         $this->lw->toLayoutView($this->fm, $this->sm);
