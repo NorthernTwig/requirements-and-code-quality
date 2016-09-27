@@ -18,11 +18,13 @@ class LoginController {
 
       try {
 
-        if (isset($_COOKIE['Username']) && !$this->sm->getIsLoggedIn()) {
-            $this->setUsername();
-            $this->setPassword();
-            $this->compareEnteredCredentials();
-        } else if ($this->lw->isLoggingIn() && !$this->sm->getIsLoggedIn()) {
+        if (isset($_COOKIE['Username'])) {
+          self::$username = $_COOKIE['Username'];
+          self::$password = $_COOKIE['Password'];
+          $this->compareEnteredCredentials();
+        }
+
+        if ($this->lw->isLoggingIn() && !$this->sm->getIsLoggedIn()) {
           $this->setUsername();
           $this->setPassword();
           $this->compareEnteredCredentials();
