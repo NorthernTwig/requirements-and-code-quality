@@ -11,6 +11,12 @@ class RegisterView {
 	private static $passwordRepeat = 'RegisterView::PasswordRepeat';
 	private static $message = '';
 
+	public function __construct() {
+		if (!isset($_SESSION['username'])) {
+			$_SESSION['username'] = '';
+		}
+	}
+
 	public function registerToLayoutView($flashModel, $sessionModel) {
 		$rv = new LayoutView($sessionModel);
 		$rv->toOutputBuffer($this->generateRegisterForm());
