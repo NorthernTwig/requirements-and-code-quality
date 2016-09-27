@@ -24,7 +24,7 @@ class RegisterView {
 		<legend>Register a new user - Write username and password</legend>
 		<p id="' . self::$messageId . '">' . $this->getMessage() . '</p>
 		<label for="' . self::$name . '">Username :</label>
-		<input type="text" size="20" name="' . self::$name . '" id="' . self::$name . '" value="">
+		<input type="text" size="20" name="' . self::$name . '" id="' . self::$name . '" value="' . $_SESSION['username'] . '">
 		<br>
 		<label for="' . self::$password . '">Password  :</label>
 		<input type="password" size="20" name="' . self::$password . '" id="' . self::$password . '" value="">
@@ -49,7 +49,7 @@ class RegisterView {
 				self::$message .= 'Username has too few characters, at least 3 characters.<br>';
 			}
 
-			return $_POST[self::$name];
+			$_SESSION['username'] = $_POST[self::$name];
 		}
 
 	}
@@ -61,7 +61,6 @@ class RegisterView {
 				self::$message .= 'Password has too few characters, at least 6 characters.<br>';
 			}
 
-			return $_POST[self::$password];
 		}
 	}
 
