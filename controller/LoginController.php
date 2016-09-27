@@ -64,7 +64,7 @@ class LoginController {
         $_SESSION['message'] = 'Welcome and you will be remembered';
         $testing = true;
       } else if (!$this->sm->getIsLoggedIn() && isset($_COOKIE['Username'])) {
-        $_SESSION['message'] = 'Welcome with cookie';
+        $_SESSION['message'] = 'Welcome back with cookie';
         $testing = true;
       } else if (!$this->sm->getIsLoggedIn()) {
         $_SESSION['message'] = 'Welcome';
