@@ -17,12 +17,13 @@ class LoginController {
     $this->fm = $flashModel;
 
       try {
-        if ($this->lw->isLoggingIn()) {
+        if ($this->lw->isLoggingIn() || $this->lw->isKeepingLogin()) {
           $this->setUsername();
           $this->setPassword();
           $this->compareEnteredCredentials();
           $this->storeUserCredentialsInCookie();
-        } else if ($this->lw->isLoggingOut() && $this->sm->getIsLoggedIn()) {
+        }
+        if ($this->lw->isLoggingOut() && $this->sm->getIsLoggedIn()) {
           $this->removeUserCredentialsInCookie();
           $_SESSION['username'] = '';
           $_SESSION['isLoggedIn'] = false;
