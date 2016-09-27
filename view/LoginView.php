@@ -21,7 +21,6 @@ class LoginView {
 		}
 	}
 
-	//iseoighse
 	public function toLayoutView($flashModel, $sessionModel) {
 		$this->sessionModel = $sessionModel;
 		$lv = new LayoutView($sessionModel);
@@ -95,7 +94,11 @@ class LoginView {
 	}
 
 	public function isLoggingIn() {
-		return isset($_POST[self::$login]);
+		if (isset($_POST[self::$login])) {
+			return true;
+		} else {
+			return isset($_POST[self::$login]);
+		}
 	}
 
 	public function isLoggingOut() {

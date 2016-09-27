@@ -8,6 +8,8 @@ require_once("model/FlashModel.php");
 require_once("model/SessionModel.php");
 
 class LoginController {
+  private static $username = '';
+  private static $password = '';
 
   public function __construct($flashModel, $sessionModel) {
     $this->lw = new \view\LoginView();
@@ -16,9 +18,9 @@ class LoginController {
 
       try {
         if ($this->lw->isLoggingIn()) {
-          $this->username = $this->lw->getUsername();
-          $_SESSION['username'] = $this->lw->getUsername();
-          $this->password = $this->lw->getPassword();
+          $this->setUsername();
+          $this->setPassword();
+          $_SESSION['username'] = self::$username;
           $this->compareEnteredCredentials();
           $this->storeUserCredentialsInCookie();
         } else if ($this->lw->isLoggingOut() && $this->sm->getIsLoggedIn()) {
@@ -47,10 +49,12 @@ class LoginController {
 
     $existingUsers = $this->getExistingUsers();
 
-    if ($existingUsers['username'] == $this->username && $existingUsers['password'] == $this->password) {
+    if ($existingUsers['username'] == self::$username && $existingUsers['password'] == self::$password) {
       $_SESSION['isLoggedIn'] = true;
       if ($this->lw->isKeepingLogin()) {
         $_SESSION['message'] = 'Welcome and you will be remembered';
+      } else if (!$this->sm->getIsLoggedIn() && isset($_COOKIE['Username'])) {
+        $_SESSION['message'] = 'Welcome with cookie';
       } else if (!$this->sm->getIsLoggedIn()) {
         $_SESSION['message'] = 'Welcome';
       }
@@ -60,9 +64,27 @@ class LoginController {
 
   }
 
+  private function setUsername() {
+    if (isset($_COOKIE['Username'])) {
+      self::$username = $_COOKIE['Username'];
+    } else {
+      self::$username = $this->lw->getUsername();
+    }
+  }
+
+  private function setPassword() {
+    if (isset($_COOKIE['Password'])) {
+      self::$password = $_COOKIE['Password'];
+    } else {
+      self::$password = $this->lw->getPassword();
+    }
+  }
+
   private function storeUserCredentialsInCookie() {
-    $this->setUsernameCookie();
-    $this->setPasswordCookie();
+    if ($this->lw->isKeepingLogin()) {
+      $this->setUsernameCookie();
+      $this->setPasswordCookie();
+    }
   }
 
   private function removeUserCredentialsInCookie() {
@@ -71,11 +93,11 @@ class LoginController {
   }
 
   private function setUsernameCookie() {
-    setcookie("Username", $this->username, time()+36000);
+    setcookie("Username", self::$username, time()+36000);
   }
 
   private function setPasswordCookie() {
-    setcookie("Password", $this->password, time()+36000);
+    setcookie("Password", self::$password, time()+36000);
   }
 
   private function removeUsernameCookie() {
