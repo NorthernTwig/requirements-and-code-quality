@@ -48,19 +48,16 @@ class RegisterView {
 		return self::$message;
 	}
 
+	private function cleanUpUsername($username) {
+		$cleanedUsername = strip_tags($username);
+		return $cleanedUsername;
+	}
+
 	private function checkForInvalidCharacters() {
-		$str = '';
-		for ($i = 0; $i < strlen($_POST[self::$name]); $i++) {
-			preg_match('/^[a-zA-Z0-9]+$/', $_POST[self::$name][$i], $matches);
+		preg_match('/^[a-zA-Z0-9]+$/', $_POST[self::$name], $matches);
+		$_SESSION['username'] = $this->cleanUpUsername($_POST[self::$name]);
 
-			if (count($matches) > 0) {
-				$str .= $_POST[self::$name][$i];
-			}
-		}
-
-		$_SESSION['username'] = $str;
-
-		if ($matches < 0) {
+		if ($matches > 0) {
 			return true;
 		} else {
 			return false;
