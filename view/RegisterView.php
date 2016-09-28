@@ -49,12 +49,23 @@ class RegisterView {
 	}
 
 	private function checkForInvalidCharacters() {
-		preg_match('/^[a-zA-Z0-9]+$/', $_POST[self::$name], $matches);
-		if ($matches > 0) {
+		$str = '';
+		for ($i = 0; $i < strlen($_POST[self::$name]); $i++) {
+			preg_match('/^[a-zA-Z0-9]+$/', $_POST[self::$name][$i], $matches);
+
+			if (count($matches) > 0) {
+				$str .= $_POST[self::$name][$i];
+			}
+		}
+
+		$_SESSION['username'] = $str;
+
+		if ($matches < 0) {
 			return true;
 		} else {
 			return false;
 		}
+
 	}
 
 	public function checkRegisterUsername() {
@@ -62,11 +73,10 @@ class RegisterView {
 		if (isset($_POST[self::$name])) {
 			if (strlen($_POST[self::$name]) < 3) {
 				self::$message .= 'Username has too few characters, at least 3 characters.<br>';
+				$_SESSION['username'] = $_POST[self::$name];
 			} else if ($this->checkForInvalidCharacters()) {
 				self::$message .= 'Username contains invalid characters.<br>';
 			}
-
-			$_SESSION['username'] = $_POST[self::$name];
 		}
 
 	}
