@@ -78,7 +78,6 @@ class RegisterView {
 			if (strlen($_POST[self::$password]) < 6) {
 				self::$message .= 'Password has too few characters, at least 6 characters.<br>';
 			}
-
 		}
 	}
 
@@ -87,6 +86,22 @@ class RegisterView {
 			if ($_POST[self::$password] !== $_POST[self::$passwordRepeat]) {
 				self::$message .= 'Passwords do not match.';
 			}
+		}
+	}
+
+	public function setRegisterExistsMessage() {
+		self::$message = 'User already exists.';
+	}
+
+	public function getUsernameForRegister() {
+		if (isset($_POST[self::$name])) {
+			return $_POST[self::$name];
+		}
+	}
+
+	public function getPasswordForRegister() {
+		if (isset($_POST[self::$password])) {
+			return $_POST[self::$password];
 		}
 	}
 

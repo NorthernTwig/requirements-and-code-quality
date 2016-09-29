@@ -5,6 +5,7 @@ namespace controller;
 require_once("view/LoginView.php");
 require_once("model/UserDatabase.php");
 require_once("model/FlashModel.php");
+require_once('model/DAL.php');
 require_once("model/SessionModel.php");
 
 class LoginController {
@@ -13,6 +14,7 @@ class LoginController {
 
   public function __construct($flashModel, $sessionModel) {
     $this->lw = new \view\LoginView();
+    $this->db = new \model\DAL();
     $this->sm = $sessionModel;
     $this->fm = $flashModel;
 
@@ -48,17 +50,11 @@ class LoginController {
       }
   }
 
-  private function getExistingUsers() {
-    $udb = new \model\UserDatabase();
-    return $udb->superRealDatabase();
-  }
-
   private function compareEnteredCredentials() {
 
-    $existingUsers = $this->getExistingUsers();
     $testing = false;
 
-    if ($existingUsers['username'] == self::$username && $existingUsers['password'] == self::$password) {
+    if ($this->db->loopThroughCredentials(self::$username, self::$password)) {
       $_SESSION['isLoggedIn'] = true;
       if ($this->lw->isKeepingLogin()) {
         $_SESSION['message'] = 'Welcome and you will be remembered';
