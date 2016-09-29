@@ -51,7 +51,6 @@ class DAL {
 
   public function saveDB($newJson) {
     $encodedJson = json_encode($newJson);
-    var_dump($encodedJson);
     file_put_contents('./database/UserCredentials.json', $encodedJson);
   }
 
