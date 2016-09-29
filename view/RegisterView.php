@@ -90,7 +90,7 @@ class RegisterView {
 	}
 
 	public function setRegisterExistsMessage() {
-		self::$message = 'User already exists.';
+		self::$message = 'User exists, pick another username.';
 	}
 
 	public function getUsernameForRegister() {
