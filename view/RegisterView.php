@@ -44,7 +44,7 @@ class RegisterView {
 		</form>';
 	}
 
-	private function getMessage() {
+	public function getMessage() {
 		return self::$message;
 	}
 

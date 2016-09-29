@@ -23,6 +23,8 @@ class RegisterController {
       $this->rw->passwordsMatch();
       if ($db->compareUsername($this->rw->getUsernameForRegister())) {
         $this->rw->setRegisterExistsMessage();
+      } else if (strlen($this->rw->getMessage()) <= 0) {
+        $db->addUserToDB($this->rw->getUsernameForRegister(), $this->rw->getPasswordForRegister());
       }
     } catch (\Exception $e) {
       $_SESSION['message'] = $e->getMessage();

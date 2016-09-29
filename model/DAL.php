@@ -35,9 +35,24 @@ class DAL {
         $usernameExists = true;
       }
     }
-
     return $usernameExists;
+  }
 
+  public function addUserToDB($enteredUsername, $enteredPassword) {
+    $json = $this->decodeJson();
+    $newCredArray = array();
+    $newCredArray['username'] = $enteredUsername;
+    $newCredArray['password'] = $enteredPassword;
+    array_push($json, $newCredArray);
+    if ($enteredUsername !== NULL || $enteredPassword !== NULL) {
+      $this->saveDB($json);
+    }
+  }
+
+  public function saveDB($newJson) {
+    $encodedJson = json_encode($newJson);
+    var_dump($encodedJson);
+    file_put_contents('./database/UserCredentials.json', $encodedJson);
   }
 
 }
