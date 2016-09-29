@@ -16,25 +16,25 @@ class LoginController {
     $this->sm = $sessionModel;
     $this->fm = $flashModel;
 
-      try {
+    try {
 
-        if (isset($_COOKIE['Username']) && !$this->lw->isLoggingOut()) {
-          self::$username = $_COOKIE['Username'];
-          self::$password = $_COOKIE['Password'];
+      if (isset($_COOKIE['Username']) && !$this->lw->isLoggingOut()) {
+        self::$username = $_COOKIE['Username'];
+        self::$password = $_COOKIE['Password'];
+        $this->compareEnteredCredentials();
+      } else {
+        if ($this->lw->isLoggingIn() && !$this->sm->getIsLoggedIn()) {
+          $this->setUsername();
+          $this->setPassword();
           $this->compareEnteredCredentials();
-        } else {
-          if ($this->lw->isLoggingIn() && !$this->sm->getIsLoggedIn()) {
-            $this->setUsername();
-            $this->setPassword();
-            $this->compareEnteredCredentials();
-            $this->storeUserCredentialsInCookie();
-          } else if ($this->lw->isLoggingOut() && $this->sm->getIsLoggedIn()) {
-            $this->removeUserCredentialsInCookie();
-            $_SESSION['username'] = '';
-            $_SESSION['isLoggedIn'] = false;
-            $_SESSION['message'] = 'Bye bye!';
-          }
+          $this->storeUserCredentialsInCookie();
+        } else if ($this->lw->isLoggingOut() && $this->sm->getIsLoggedIn()) {
+          $this->removeUserCredentialsInCookie();
+          $_SESSION['username'] = '';
+          $_SESSION['isLoggedIn'] = false;
+          $_SESSION['message'] = 'Bye bye!';
         }
+      }
 
       } catch (\Exception $e) {
         $_SESSION['username'] = self::$username;

@@ -23,10 +23,6 @@ class RegisterController {
       $_SESSION['message'] = $e->getMessage();
     } finally {
       $this->rw->registerToLayoutView($this->fm, $this->sm);
-      // if ($this->compareEnteredCredentials() || $this->lw->isLoggingOut()) {
-      //   header('Location: /');
-      //   exit();
-      // }
     }
 
   }

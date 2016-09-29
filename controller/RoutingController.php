@@ -26,5 +26,4 @@ class RoutingController {
         break;
     }
   }
-
 }
