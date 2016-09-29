@@ -12,17 +12,31 @@ class DAL {
     return json_decode($this->jsonString, true);
   }
 
-  public function loopThroughCredentials($enteredUsername, $enteredPassword) {
+  public function compareCredentials($enteredUsername, $enteredPassword) {
     $accounts = $this->decodeJson();
-    $userExists = false;
+    $isCredentialsCorrect = false;
 
     for ($i=0; $i < count($accounts); $i++) {
-      if ($accounts[$i]['username'] === $enteredUsername) {
-        $userExists = true;
+      if ($accounts[$i]['username'] === $enteredUsername && $accounts[$i]['password'] === $enteredPassword) {
+        $isCredentialsCorrect = true;
       }
     }
 
-    return $userExists;
+    return $isCredentialsCorrect;
+
+  }
+
+  public function compareUsername($enteredUsername) {
+    $accounts = $this->decodeJson();
+    $usernameExists = false;
+
+    for ($i=0; $i < count($accounts); $i++) {
+      if ($accounts[$i]['username'] === $enteredUsername) {
+        $usernameExists = true;
+      }
+    }
+
+    return $usernameExists;
 
   }
 

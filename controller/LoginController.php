@@ -54,7 +54,7 @@ class LoginController {
 
     $testing = false;
 
-    if ($this->db->loopThroughCredentials(self::$username, self::$password)) {
+    if ($this->db->compareCredentials(self::$username, self::$password)) {
       $_SESSION['isLoggedIn'] = true;
       if ($this->lw->isKeepingLogin()) {
         $_SESSION['message'] = 'Welcome and you will be remembered';

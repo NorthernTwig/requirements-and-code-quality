@@ -21,10 +21,9 @@ class RegisterController {
       $this->rw->checkRegisterUsername();
       $this->rw->checkRegisterPassword();
       $this->rw->passwordsMatch();
-      if ($db->loopThroughCredentials($this->rw->getUsernameForRegister(), $this->rw->getPasswordForRegister())) {
+      if ($db->compareUsername($this->rw->getUsernameForRegister())) {
         $this->rw->setRegisterExistsMessage();
       }
-
     } catch (\Exception $e) {
       $_SESSION['message'] = $e->getMessage();
     } finally {
