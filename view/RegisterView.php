@@ -56,8 +56,7 @@ class RegisterView {
 	private function checkForInvalidCharacters() {
 		preg_match('/^[a-zA-Z0-9]+$/', $_POST[self::$name], $matches);
 		$_SESSION['username'] = $this->cleanUpUsername($_POST[self::$name]);
-
-		return $matches > 0;
+		return count($matches) > 0;
 
 	}
 
@@ -66,7 +65,7 @@ class RegisterView {
 			if (strlen($_POST[self::$name]) < 3) {
 				self::$message .= 'Username has too few characters, at least 3 characters.<br>';
 				$_SESSION['username'] = $_POST[self::$name];
-			} else if ($this->checkForInvalidCharacters()) {
+			} else if (!$this->checkForInvalidCharacters()) {
 				self::$message .= 'Username contains invalid characters.<br>';
 			}
 		}
