@@ -17,7 +17,7 @@ class DAL {
     $userExists = false;
 
     for ($i=0; $i < count($accounts); $i++) {
-      if ($accounts[$i]['username'] === $enteredUsername && $accounts[$i]['password'] === $enteredPassword) {
+      if ($accounts[$i]['username'] === $enteredUsername) {
         $userExists = true;
       }
     }
