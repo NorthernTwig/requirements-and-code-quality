@@ -6,28 +6,27 @@ require_once('model/FlashModel.php');
 
 class GetFlashMessages {
 
-  public function __construct($flashModel) {
-    $this->FlashModel = $flashModel;
+  public function __construct() {
   }
 
-  public function setWelcomeRemember() {
-    $this->FlashModel->setFlashMessage('Welcome and you will be remembered');
+  public function setWelcomeRemember() : string {
+    return 'Welcome and you will be remembered';
   }
 
-  public function setWelcomeCookie() {
-    $this->FlashModel->setFlashMessage('Welcome back with cookie');
+  public function setWelcomeCookie() : string {
+    return 'Welcome back with cookie';
   }
 
-  public function setWelcomeStandard() {
-    $this->FlashModel->setFlashMessage('Welcome');
+  public function setWelcomeStandard() : string {
+    return 'Welcome';
   }
 
-  public function setWrongCredentials() {
-    $this->FlashModel->setFlashMessage('Wrong name or password');
+  public function setWrongCredentials() : string {
+    return 'Wrong name or password';
   }
 
-  public function setLogoutMessage() {
-    $this->FlashModel->setFlashMessage('Bye bye!');
+  public function setLogoutMessage() : string {
+    return 'Bye bye!';
   }
 
 }

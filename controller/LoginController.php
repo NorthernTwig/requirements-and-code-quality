@@ -14,8 +14,8 @@ class LoginController {
   private static $username = '';
   private static $password = '';
 
-  public function __construct($flashModel, $sessionModel) {
-    $this->GetFlashMessages = new \view\GetFlashMessages($flashModel);
+  public function __construct(\model\FlashModel $flashModel, \model\SessionModel $sessionModel) {
+    $this->getFlashMessages = new \view\GetFlashMessages();
     $this->lw = new \view\LoginView();
     $this->db = new \model\DAL();
     $this->sm = $sessionModel;
@@ -37,7 +37,7 @@ class LoginController {
           $this->removeUserCredentialsInCookie();
           $_SESSION['username'] = '';
           $_SESSION['isLoggedIn'] = false;
-          $this->GetFlashMessages->setLogoutMessage();
+          $this->fm->setFlashMessage($this->getFlashMessages->setLogoutMessage());
         }
       }
 
@@ -60,17 +60,17 @@ class LoginController {
     if ($this->db->compareCredentials(self::$username, self::$password)) {
       $_SESSION['isLoggedIn'] = true;
       if ($this->lw->isKeepingLogin()) {
-        $this->GetFlashMessages->setWelcomeRemember();
+        $this->fm->setFlashMessage($this->getFlashMessages->setWelcomeRemember());
         $testing = true;
       } else if (!$this->sm->getIsLoggedIn() && isset($_COOKIE['Username'])) {
-        $this->GetFlashMessages->setWelcomeCookie();
+        $this->fm->setFlashMessage($this->getFlashMessages->setWelcomeCookie());
         $testing = true;
       } else if (!$this->sm->getIsLoggedIn()) {
-        $this->GetFlashMessages->setWelcomeStandard();
+        $this->fm->setFlashMessage($this->getFlashMessages->setWelcomeStandard());
         $testing = true;
       }
     } else if (strlen(self::$password) > 0 || strlen(self::$username) > 0) {
-      $this->GetFlashMessages->setWrongCredentials();
+      $this->fm->setFlashMessage($this->getFlashMessages->setWrongCredentials());
     }
 
     return $testing;
