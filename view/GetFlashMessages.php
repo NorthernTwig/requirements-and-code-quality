@@ -6,9 +6,6 @@ require_once('model/FlashModel.php');
 
 class GetFlashMessages {
 
-  public function __construct() {
-  }
-
   public function setWelcomeRemember() : string {
     return 'Welcome and you will be remembered';
   }

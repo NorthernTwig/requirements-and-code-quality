@@ -11,7 +11,7 @@ require_once('model/DAL.php');
 
 class RegisterController {
 
-  public function __construct($flashModel, $sessionModel) {
+  public function __construct(\model\FlashModel $flashModel, \model\SessionModel $sessionModel) {
     $db = new \model\DAL();
     $this->rw = new \view\RegisterView();
     $this->sm = $sessionModel;

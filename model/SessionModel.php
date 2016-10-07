@@ -12,7 +12,7 @@ class SessionModel {
   }
 
   public function setIsLoggedIn(bool $loggedIn) {
-    self::$isLoggedIn = $loggedIn;
+    $_SESSION['isLoggedIn'] = $loggedIn;
   }
 
   public function getIsLoggedIn() : bool {
