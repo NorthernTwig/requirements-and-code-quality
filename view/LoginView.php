@@ -27,13 +27,6 @@ class LoginView {
 		$this->flashModel = $flashModel;
 		$flashMessage = $this->flashModel->getFlashMessage();
 
-		// if ($this->isLoggingIn() || $this->isLoggingOut()) {
-		// // 	$flashMessage = $_SESSION['message'];
-		// // } else {
-		// }
-
-
-
 		if ($this->sessionModel->getIsLoggedIn()) {
 			$lv->toOutputBuffer($this->generateLogoutButtonHTML($flashMessage));
 		} else {

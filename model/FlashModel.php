@@ -13,6 +13,7 @@ class FlashModel {
 
   public function setFlashMessage(string $flash) {
     $_SESSION['message'] = $flash;
+    self::$message = $_SESSION['message'];
   }
 
   public function removeFlashMessage() {

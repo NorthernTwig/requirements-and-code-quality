@@ -45,7 +45,7 @@ class LoginController {
 
       } catch (\Exception $e) {
         $_SESSION['username'] = self::$username;
-        $_SESSION['message'] = $e->getMessage();
+        $this->fm->setFlashMessage($e->getMessage());
       } finally {
         $this->lw->loginToLayoutView($this->fm, $this->sm);
         if ($this->compareEnteredCredentials() || $this->lw->isLoggingOut()) {
