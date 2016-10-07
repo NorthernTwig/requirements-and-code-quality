@@ -3,6 +3,7 @@
 namespace controller;
 
 require_once("view/LoginView.php");
+require_once("view/GetFlashMessages.php");
 require_once("model/UserDatabase.php");
 require_once("model/FlashModel.php");
 require_once('model/DAL.php');
@@ -15,6 +16,7 @@ class LoginController {
   public function __construct($flashModel, $sessionModel) {
     $this->lw = new \view\LoginView();
     $this->db = new \model\DAL();
+    $this->GetFlashMessages = new \model\GetFlashMessages();
     $this->sm = $sessionModel;
     $this->fm = $flashModel;
 
@@ -63,7 +65,7 @@ class LoginController {
         $_SESSION['message'] = 'Welcome back with cookie';
         $testing = true;
       } else if (!$this->sm->getIsLoggedIn()) {
-        $_SESSION['message'] = 'Welcome';
+        $this->GetFlashMessages.setWelcomeStandard();
         $testing = true;
       }
     } else if (strlen(self::$password) > 0 || strlen(self::$username) > 0) {

@@ -25,22 +25,22 @@ class RegisterView {
 	private function generateRegisterForm() {
 		return '
 		<h2>Register new user</h2>
-		<form action="?register" method="post" enctype="multipart/form-data">
-		<fieldset>
-		<legend>Register a new user - Write username and password</legend>
-		<p id="' . self::$messageId . '">' . $this->getMessage() . '</p>
-		<label for="' . self::$name . '">Username :</label>
-		<input type="text" size="20" name="' . self::$name . '" id="' . self::$name . '" value="' . $_SESSION['username'] . '">
-		<br>
-		<label for="' . self::$password . '">Password  :</label>
-		<input type="password" size="20" name="' . self::$password . '" id="' . self::$password . '" value="">
-		<br>
-		<label for="' . self::$passwordRepeat . '">Repeat password  :</label>
-		<input type="password" size="20" name="' . self::$passwordRepeat . '" id="' . self::$passwordRepeat . '" value="">
-		<br>
-		<input id="submit" type="submit" name="DoRegistration" value="Register">
-		<br>
-		</fieldset>
+			<form action="?register" method="post" enctype="multipart/form-data">
+			<fieldset>
+				<legend>Register a new user - Write username and password</legend>
+				<p id="' . self::$messageId . '">' . $this->getMessage() . '</p>
+				<label for="' . self::$name . '">Username :</label>
+				<input type="text" size="20" name="' . self::$name . '" id="' . self::$name . '" value="' . $_SESSION['username'] . '">
+				<br>
+				<label for="' . self::$password . '">Password  :</label>
+				<input type="password" size="20" name="' . self::$password . '" id="' . self::$password . '" value="">
+				<br>
+				<label for="' . self::$passwordRepeat . '">Repeat password  :</label>
+				<input type="password" size="20" name="' . self::$passwordRepeat . '" id="' . self::$passwordRepeat . '" value="">
+				<br>
+				<input id="submit" type="submit" name="DoRegistration" value="Register">
+				<br>
+			</fieldset>
 		</form>';
 	}
 
@@ -57,7 +57,6 @@ class RegisterView {
 		preg_match('/^[a-zA-Z0-9]+$/', $_POST[self::$name], $matches);
 		$_SESSION['username'] = $this->cleanUpUsername($_POST[self::$name]);
 		return count($matches) > 0;
-
 	}
 
 	public function checkRegisterUsername() {

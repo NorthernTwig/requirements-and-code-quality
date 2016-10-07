@@ -3,7 +3,7 @@
 namespace model;
 
 class FlashModel {
-  private static $message = '';
+  private static $message = $_SESSION['message'];
 
   public function __construct() {
     if (isset($_SESSION['message'])) {
