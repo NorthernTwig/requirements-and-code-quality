@@ -8,15 +8,16 @@ require_once("model/UserDatabase.php");
 require_once("model/FlashModel.php");
 require_once('model/DAL.php');
 require_once("model/SessionModel.php");
+require_once("view/GetFlashMessages.php");
 
 class LoginController {
   private static $username = '';
   private static $password = '';
 
   public function __construct($flashModel, $sessionModel) {
+    $this->GetFlashMessages = new \view\GetFlashMessages($flashModel);
     $this->lw = new \view\LoginView();
     $this->db = new \model\DAL();
-    $this->GetFlashMessages = new \model\GetFlashMessages();
     $this->sm = $sessionModel;
     $this->fm = $flashModel;
 
@@ -36,7 +37,7 @@ class LoginController {
           $this->removeUserCredentialsInCookie();
           $_SESSION['username'] = '';
           $_SESSION['isLoggedIn'] = false;
-          $_SESSION['message'] = 'Bye bye!';
+          $this->GetFlashMessages->setLogoutMessage();
         }
       }
 
@@ -59,17 +60,17 @@ class LoginController {
     if ($this->db->compareCredentials(self::$username, self::$password)) {
       $_SESSION['isLoggedIn'] = true;
       if ($this->lw->isKeepingLogin()) {
-        $_SESSION['message'] = 'Welcome and you will be remembered';
+        $this->GetFlashMessages->setWelcomeRemember();
         $testing = true;
       } else if (!$this->sm->getIsLoggedIn() && isset($_COOKIE['Username'])) {
-        $_SESSION['message'] = 'Welcome back with cookie';
+        $this->GetFlashMessages->setWelcomeCookie();
         $testing = true;
       } else if (!$this->sm->getIsLoggedIn()) {
-        $this->GetFlashMessages.setWelcomeStandard();
+        $this->GetFlashMessages->setWelcomeStandard();
         $testing = true;
       }
     } else if (strlen(self::$password) > 0 || strlen(self::$username) > 0) {
-      $_SESSION['message'] = 'Wrong name or password';
+      $this->GetFlashMessages->setWrongCredentials();
     }
 
     return $testing;

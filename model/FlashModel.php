@@ -3,7 +3,7 @@
 namespace model;
 
 class FlashModel {
-  private static $message = $_SESSION['message'];
+  private static $message = '';
 
   public function __construct() {
     if (isset($_SESSION['message'])) {
@@ -12,7 +12,7 @@ class FlashModel {
   }
 
   public function setFlashMessage(string $flash) {
-    self::$message = $flash;
+    $_SESSION['message'] = $flash;
   }
 
   public function removeFlashMessage() {
