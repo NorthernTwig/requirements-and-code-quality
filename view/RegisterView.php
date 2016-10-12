@@ -9,6 +9,7 @@ class RegisterView {
 	private static $name = 'RegisterView::UserName';
 	private static $password = 'RegisterView::Password';
 	private static $passwordRepeat = 'RegisterView::PasswordRepeat';
+	private static $register = 'RegisterView::Register';
 	private static $message = '';
 
 	public function __construct() {
@@ -100,6 +101,18 @@ class RegisterView {
 	public function getPasswordForRegister() {
 		if (isset($_POST[self::$password])) {
 			return $_POST[self::$password];
+		}
+	}
+
+	public function isRegistering() {
+		if (isset($_POST[self::$register])) {
+		// 	return var_dump($_POST[self::$register]);
+		return $_POST[self::$register];
+			// if ($_POST[self::$register] == 'Register') {
+		// 		return true;
+		// 	} else {
+		// 		return false;
+		// 	}
 		}
 	}
 

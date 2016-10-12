@@ -12,25 +12,30 @@ require_once('model/DAL.php');
 class RegisterController {
 
   public function __construct(\model\FlashModel $flashModel, \model\SessionModel $sessionModel) {
-    $db = new \model\DAL();
-    $this->rw = new \view\RegisterView();
-    $this->sm = $sessionModel;
-    $this->fm = $flashModel;
+      $db = new \model\DAL();
+      $this->rw = new \view\RegisterView();
+      $this->sm = $sessionModel;
+      $this->fm = $flashModel;
 
-    try {
-      $this->rw->checkRegisterUsername();
-      $this->rw->checkRegisterPassword();
-      $this->rw->passwordsMatch();
-      if ($db->compareUsername($this->rw->getUsernameForRegister())) {
-        $this->rw->setRegisterExistsMessage();
-      } else if (strlen($this->rw->getMessage()) <= 0) {
-        $db->addUserToDB($this->rw->getUsernameForRegister(), $this->rw->getPasswordForRegister());
+      try {
+          $this->rw->checkRegisterUsername();
+          $this->rw->checkRegisterPassword();
+          $this->rw->passwordsMatch();
+
+          if ($db->compareUsername($this->rw->getUsernameForRegister())) {
+              $this->rw->setRegisterExistsMessage();
+          } else if (!$db->compareUsername($this->rw->getUsernameForRegister())) {
+              $db->addUserToDB($this->rw->getUsernameForRegister(), $this->rw->getPasswordForRegister());
+              if ($db->wasSuccessfull()) {
+                  header('Location: /');
+              }
+          }
+
+      } catch (\Exception $e) {
+          $_SESSION['message'] = $e->getMessage();
+      } finally {
+          $this->rw->registerToLayoutView($this->fm, $this->sm);
       }
-    } catch (\Exception $e) {
-      $_SESSION['message'] = $e->getMessage();
-    } finally {
-      $this->rw->registerToLayoutView($this->fm, $this->sm);
-    }
 
   }
 

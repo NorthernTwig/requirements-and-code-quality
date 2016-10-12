@@ -3,6 +3,8 @@
 namespace model;
 
 class DAL {
+    private static $REGISTER_SUCCESS = false;
+
 
   public function __construct() {
     $this->jsonString = file_get_contents('./database/UserCredentials.json');
@@ -16,7 +18,7 @@ class DAL {
     $accounts = $this->decodeJson();
     $isCredentialsCorrect = false;
 
-    for ($i=0; $i < count($accounts); $i++) {
+    for ($i = 0; $i < count($accounts); $i++) {
       if ($accounts[$i]['username'] === $enteredUsername && $accounts[$i]['password'] === $enteredPassword) {
         $isCredentialsCorrect = true;
       }
@@ -30,7 +32,7 @@ class DAL {
     $accounts = $this->decodeJson();
     $usernameExists = false;
 
-    for ($i=0; $i < count($accounts); $i++) {
+    for ($i = 0; $i < count($accounts); $i++) {
       if ($accounts[$i]['username'] === $enteredUsername) {
         $usernameExists = true;
       }
@@ -52,6 +54,13 @@ class DAL {
   public function saveDB($newJson) {
     $encodedJson = json_encode($newJson);
     file_put_contents('./database/UserCredentials.json', $encodedJson);
+    self::$REGISTER_SUCCESS = true;
   }
+
+  public function wasSuccessfull() {
+      return self::$REGISTER_SUCCESS;
+  }
+
+
 
 }

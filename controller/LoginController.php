@@ -24,7 +24,6 @@ class LoginController {
     $this->fm = $flashModel;
 
     try {
-
       if (isset($_COOKIE[self::$COOKIE_NAME_STRING]) && !$this->lw->isLoggingOut()) {
         self::$username = $_COOKIE[self::$COOKIE_NAME_STRING];
         self::$password = $_COOKIE[self::$COOKIE_PASSWORD_STRING];
@@ -66,6 +65,7 @@ class LoginController {
         } else if (!$this->sm->getIsLoggedIn()) {
             $this->fm->setFlashMessage($this->getFlashMessages->setWelcomeStandard());
         }
+
         $this->sm->setIsLoggedIn(true);
 
     } else if (strlen(self::$password) > 0 || strlen(self::$username) > 0) {
