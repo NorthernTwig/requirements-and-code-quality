@@ -66,6 +66,7 @@ class RegisterView {
 			if (strlen($_POST[self::$name]) < 3) {
 				self::$message .= 'Username has too few characters, at least 3 characters.<br>';
 				$_SESSION['username'] = $_POST[self::$name];
+				self::$successfull_registration = false;
 			} else if (!$this->checkForInvalidCharacters()) {
 				self::$message .= 'Username contains invalid characters.<br>';
 				self::$successfull_registration = false;
