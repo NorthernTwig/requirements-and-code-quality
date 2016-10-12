@@ -28,6 +28,7 @@ class RegisterController {
           } else if ($this->rw->isRegistering()) {
               if ($this->rw->registerSuccessfull()) {
                   $db->addUserToDB($this->rw->getUsernameForRegister(), $this->rw->getPasswordForRegister());
+                  $this->fm->setFlashMessage('Registered new user.');
                   header('Location: /');
                   exit();
               }
