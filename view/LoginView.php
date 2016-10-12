@@ -74,14 +74,14 @@ class LoginView {
 
 	public function getUsername() {
 			if (strlen($_POST[self::$name]) == 0) {
-				throw new \Exception('Nått med username');
+				throw new \Exception('Username is missing');
 			}
 		return $_POST[self::$name];
 	}
 
 	public function getPassword() {
 		if (strlen($_POST[self::$password]) == 0) {
-			throw new \Exception('Nått med password');
+			throw new \Exception('Password is missing');
 		}
 		return $_POST[self::$password];
 	}
