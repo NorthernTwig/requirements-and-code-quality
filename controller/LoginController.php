@@ -48,7 +48,7 @@ class LoginController {
         $this->fm->setFlashMessage($e->getMessage());
       } finally {
         $this->lw->loginToLayoutView($this->fm, $this->sm);
-        if ($this->compareEnteredCredentials() || $this->lw->isLoggingOut()) {
+        if ($this->lw->isLoggingIn() || $this->lw->isLoggingOut()) {
           header('Location: /');
           exit();
         }
@@ -57,41 +57,36 @@ class LoginController {
 
   private function compareEnteredCredentials() {
 
-    $testing = false;
-
     if ($this->db->compareCredentials(self::$username, self::$password)) {
-      $this->sm->setIsLoggedIn(true);
-      if ($this->lw->isKeepingLogin()) {
-        $this->fm->setFlashMessage($this->getFlashMessages->setWelcomeRemember());
-        $testing = true;
-      } else if (!$this->sm->getIsLoggedIn() && isset($_COOKIE[self::$COOKIE_NAME_STRING])) {
-        $this->fm->setFlashMessage($this->getFlashMessages->setWelcomeCookie());
-        $testing = true;
-      } else if (!$this->sm->getIsLoggedIn()) {
-        $this->fm->setFlashMessage($this->getFlashMessages->setWelcomeStandard());
-        $testing = true;
-      }
-    } else if (strlen(self::$password) > 0 || strlen(self::$username) > 0) {
-      $this->fm->setFlashMessage($this->getFlashMessages->setWrongCredentials());
-    }
 
-    return $testing;
+      if ($this->lw->isKeepingLogin()) {
+          $this->fm->setFlashMessage($this->getFlashMessages->setWelcomeRemember());
+        } else if (!$this->sm->getIsLoggedIn() && isset($_COOKIE[self::$COOKIE_NAME_STRING])) {
+            $this->fm->setFlashMessage($this->getFlashMessages->setWelcomeCookie());
+        } else if (!$this->sm->getIsLoggedIn()) {
+            $this->fm->setFlashMessage($this->getFlashMessages->setWelcomeStandard());
+        }
+        $this->sm->setIsLoggedIn(true);
+
+    } else if (strlen(self::$password) > 0 || strlen(self::$username) > 0) {
+            $this->fm->setFlashMessage($this->getFlashMessages->setWrongCredentials());
+    }
 
   }
 
   private function setUsername() {
-    if (isset($_COOKIE[self::$COOKIE_NAME_STRING])) {
-      self::$username = $_COOKIE[self::$COOKIE_NAME_STRING];
-    } else {
-      self::$username = $this->lw->getUsername();
-    }
+      if (isset($_COOKIE[self::$COOKIE_NAME_STRING])) {
+          self::$username = $_COOKIE[self::$COOKIE_NAME_STRING];
+      } else {
+          self::$username = $this->lw->getUsername();
+      }
   }
 
   private function setPassword() {
     if (isset($_COOKIE[self::$COOKIE_PASSWORD_STRING])) {
-      self::$password = $_COOKIE[self::$COOKIE_PASSWORD_STRING];
+        self::$password = $_COOKIE[self::$COOKIE_PASSWORD_STRING];
     } else {
-      self::$password = $this->lw->getPassword();
+        self::$password = $this->lw->getPassword();
     }
   }
 

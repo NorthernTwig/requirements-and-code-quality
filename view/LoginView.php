@@ -23,14 +23,15 @@ class LoginView {
 
 	public function loginToLayoutView($flashModel, $sessionModel) {
 		$this->sessionModel = $sessionModel;
-		$lv = new LayoutView($sessionModel);
+		$this->lv = new LayoutView($sessionModel);
 		$this->flashModel = $flashModel;
-		$flashMessage = $this->flashModel->getFlashMessage();
+		$this->flashMessage = $this->flashModel->getFlashMessage();
+
 
 		if ($this->sessionModel->getIsLoggedIn()) {
-			$lv->toOutputBuffer($this->generateLogoutButtonHTML($flashMessage));
+			$this->lv->toOutputBuffer($this->generateLogoutButtonHTML($this->flashMessage));
 		} else {
-			$lv->toOutputBuffer($this->generateLoginForm($flashMessage));
+			$this->lv->toOutputBuffer($this->generateLoginForm($this->flashMessage));
 		}
 	}
 
@@ -73,14 +74,14 @@ class LoginView {
 
 	public function getUsername() {
 			if (strlen($_POST[self::$name]) == 0) {
-				throw new \Exception('Username is missing');
+				throw new \Exception('Nått med username');
 			}
 		return $_POST[self::$name];
 	}
 
 	public function getPassword() {
 		if (strlen($_POST[self::$password]) == 0) {
-			throw new \Exception('Password is missing');
+			throw new \Exception('Nått med password');
 		}
 		return $_POST[self::$password];
 	}
