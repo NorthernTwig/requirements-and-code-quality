@@ -28,6 +28,7 @@ class RegisterController {
               $db->addUserToDB($this->rw->getUsernameForRegister(), $this->rw->getPasswordForRegister());
               if ($db->wasSuccessfull()) {
                   header('Location: /');
+                  exit();
               }
           }
 
