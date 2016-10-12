@@ -76,11 +76,9 @@ class RegisterView {
 
 	public function checkRegisterPassword() {
 		if (isset($_POST[self::$password])) {
-
 			if (strlen($_POST[self::$password]) < 6) {
 				self::$message .= 'Password has too few characters, at least 6 characters.<br>';
 				self::$successfull_registration = false;
-
 			}
 		}
 	}

@@ -23,7 +23,7 @@ class RegisterController {
           $this->rw->checkRegisterPassword();
           $this->rw->passwordsMatch();
 
-          if ($this->rw->isRegistering() && $db->compareUsername($this->rw->getUsernameForRegister())) {
+          if (strlen($this->rw->getUsernameForRegister()) > 0 && $this->rw->isRegistering() && $db->compareUsername($this->rw->getUsernameForRegister())) {
               $this->rw->setRegisterExistsMessage();
           } else if ($this->rw->isRegistering()) {
               if ($this->rw->registerSuccessfull()) {
