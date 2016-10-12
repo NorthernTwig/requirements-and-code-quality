@@ -27,7 +27,8 @@ class RegisterController {
           } else if (!$db->compareUsername($this->rw->getUsernameForRegister())) {
               $db->addUserToDB($this->rw->getUsernameForRegister(), $this->rw->getPasswordForRegister());
               if ($db->wasSuccessfull()) {
-                  header('Location: /');
+                  redirect($_SERVER['PHP_SELF']);
+                //   header('Location: /');
                   exit();
               }
           }
