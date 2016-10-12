@@ -24,7 +24,7 @@ class RegisterController {
 
           if ($db->compareUsername($this->rw->getUsernameForRegister())) {
               $this->rw->setRegisterExistsMessage();
-          } else if (!$db->compareUsername($this->rw->getUsernameForRegister())) {
+          } else if ($this->rw->isRegistering()) {
               $db->addUserToDB($this->rw->getUsernameForRegister(), $this->rw->getPasswordForRegister());
               if ($db->wasSuccessfull()) {
                   header('Location: /');

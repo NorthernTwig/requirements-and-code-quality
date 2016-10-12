@@ -39,7 +39,7 @@ class RegisterView {
 				<label for="' . self::$passwordRepeat . '">Repeat password  :</label>
 				<input type="password" size="20" name="' . self::$passwordRepeat . '" id="' . self::$passwordRepeat . '" value="">
 				<br>
-				<input id="submit" type="submit" name="DoRegistration" value="Register">
+				<input id="submit" type="submit" name="' . self::$register . '" value="Register">
 				<br>
 			</fieldset>
 		</form>';
@@ -106,13 +106,9 @@ class RegisterView {
 
 	public function isRegistering() {
 		if (isset($_POST[self::$register])) {
-		// 	return var_dump($_POST[self::$register]);
-		return $_POST[self::$register];
-			// if ($_POST[self::$register] == 'Register') {
-		// 		return true;
-		// 	} else {
-		// 		return false;
-		// 	}
+			if ($_POST[self::$register] != NULL) {
+				return true;
+			}
 		}
 	}
 
