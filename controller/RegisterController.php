@@ -18,15 +18,16 @@ class RegisterController {
       $this->fm = $flashModel;
 
       try {
+
           $this->rw->checkRegisterUsername();
           $this->rw->checkRegisterPassword();
           $this->rw->passwordsMatch();
 
-          if ($db->compareUsername($this->rw->getUsernameForRegister())) {
+          if ($this->rw->isRegistering() && $db->compareUsername($this->rw->getUsernameForRegister())) {
               $this->rw->setRegisterExistsMessage();
           } else if ($this->rw->isRegistering()) {
               $db->addUserToDB($this->rw->getUsernameForRegister(), $this->rw->getPasswordForRegister());
-              if ($db->wasSuccessfull()) {
+              if ($db->wasSuccessfull() && $this->rw->registerSuccessfull()) {
                   header('Location: /');
                   exit();
               }

@@ -11,6 +11,7 @@ class RegisterView {
 	private static $passwordRepeat = 'RegisterView::PasswordRepeat';
 	private static $register = 'RegisterView::Register';
 	private static $message = '';
+	private static $successfull_registration = true;
 
 	public function __construct() {
 		if (!isset($_SESSION['username'])) {
@@ -67,6 +68,7 @@ class RegisterView {
 				$_SESSION['username'] = $_POST[self::$name];
 			} else if (!$this->checkForInvalidCharacters()) {
 				self::$message .= 'Username contains invalid characters.<br>';
+				self::$successfull_registration = false;
 			}
 		}
 	}
@@ -76,6 +78,8 @@ class RegisterView {
 
 			if (strlen($_POST[self::$password]) < 6) {
 				self::$message .= 'Password has too few characters, at least 6 characters.<br>';
+				self::$successfull_registration = false;
+
 			}
 		}
 	}
@@ -84,12 +88,14 @@ class RegisterView {
 		if (isset($_POST[self::$password]) && isset($_POST[self::$passwordRepeat])) {
 			if ($_POST[self::$password] !== $_POST[self::$passwordRepeat]) {
 				self::$message .= 'Passwords do not match.';
+				self::$successfull_registration = false;
 			}
 		}
 	}
 
 	public function setRegisterExistsMessage() {
 		self::$message = 'User exists, pick another username.';
+		self::$successfull_registration = false;
 	}
 
 	public function getUsernameForRegister() {
@@ -102,6 +108,10 @@ class RegisterView {
 		if (isset($_POST[self::$password])) {
 			return $_POST[self::$password];
 		}
+	}
+
+	public function registerSuccessfull() {
+		return self::$successfull_registration;
 	}
 
 	public function isRegistering() {
