@@ -4,6 +4,8 @@ namespace view;
 
 require_once('LayoutView.php');
 require_once('model/FlashModel.php');
+require_once('exceptions/NoUsernameException.php');
+require_once('exceptions/NoPasswordException.php');
 
 class LoginView {
 	private static $login = 'LoginView::Login';
@@ -66,14 +68,14 @@ class LoginView {
 
 	public function getUsername() {
 			if (strlen($_POST[self::$name]) == 0) {
-				throw new \Exception('Username is missing');
+				throw new \NoUsernameException('Username is missing');
 			}
 		return $_POST[self::$name];
 	}
 
 	public function getPassword() {
 		if (strlen($_POST[self::$password]) == 0) {
-			throw new \Exception('Password is missing');
+			throw new \NoPasswordException('Password is missing');
 		}
 		return $_POST[self::$password];
 	}

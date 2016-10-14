@@ -24,35 +24,38 @@ class LoginController {
     $this->fm = $flashModel;
 
     try {
-      if (isset($_COOKIE[self::$COOKIE_NAME_STRING]) && !$this->lw->isLoggingOut()) {
-        self::$username = $_COOKIE[self::$COOKIE_NAME_STRING];
-        self::$password = $_COOKIE[self::$COOKIE_PASSWORD_STRING];
-        $this->compareEnteredCredentials();
-      } else {
-        if ($this->lw->isLoggingIn() && !$this->sm->getIsLoggedIn()) {
-          $this->setUsername();
-          $this->setPassword();
-          $this->compareEnteredCredentials();
-          $this->storeUserCredentialsInCookie();
-        } else if ($this->lw->isLoggingOut() && $this->sm->getIsLoggedIn()) {
-          $this->removeUserCredentialsInCookie();
-          $this->usernameModel->removeStoredUsername();
-          $this->sm->setIsLoggedIn(false);
-          $this->fm->setFlashMessage($this->getFlashMessages->setLogoutMessage());
+        if (isset($_COOKIE[self::$COOKIE_NAME_STRING]) && !$this->lw->isLoggingOut()) {
+            self::$username = $_COOKIE[self::$COOKIE_NAME_STRING];
+            self::$password = $_COOKIE[self::$COOKIE_PASSWORD_STRING];
+            $this->compareEnteredCredentials();
+        } else {
+            if ($this->lw->isLoggingIn() && !$this->sm->getIsLoggedIn()) {
+                $this->setUsername();
+                $this->setPassword();
+                $this->compareEnteredCredentials();
+                $this->storeUserCredentialsInCookie();
+            } else if ($this->lw->isLoggingOut() && $this->sm->getIsLoggedIn()) {
+                $this->removeUserCredentialsInCookie();
+                $this->usernameModel->removeStoredUsername();
+                $this->sm->setIsLoggedIn(false);
+                $this->fm->setFlashMessage($this->getFlashMessages->setLogoutMessage());
+            }
         }
-      }
-
-      } catch (\Exception $e) {
-        $this->usernameModel->setUsernameUsedInCredentials(self::$username);
-        $this->fm->setFlashMessage($e->getMessage());
-      } finally {
-        $this->lw->loginToLayoutView($this->fm, $this->sm, $this->usernameModel);
-        if ($this->lw->isLoggingIn() || $this->lw->isLoggingOut()) {
-          header('Location: /');
-          exit();
+        } catch (\NoUsernameException $e) {
+            $this->fm->setFlashMessage($e->getMessage());
+        } catch (\NoPasswordException $e) {
+            $this->fm->setFlashMessage($e->getMessage());
+        } catch (\Exception $e) {
+            $this->fm->setFlashMessage($e->getMessage());
+        } finally {
+            $this->usernameModel->setUsernameUsedInCredentials(self::$username);
+            $this->lw->loginToLayoutView($this->fm, $this->sm, $this->usernameModel);
+            if ($this->lw->isLoggingIn() || $this->lw->isLoggingOut()) {
+                header('Location: /');
+                exit();
+            }
         }
-      }
-  }
+    }
 
   private function compareEnteredCredentials() {
 
