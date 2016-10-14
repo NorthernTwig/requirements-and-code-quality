@@ -15,10 +15,8 @@ class LoginView {
 	private static $keep = 'LoginView::KeepMeLoggedIn';
 	private static $messageId = 'LoginView::Message';
 
-	public function __construct() {
-		// if (!isset($_SESSION['username'])) {
-		// 	$_SESSION['username'] = '';
-		// }
+	public function __construct($usernameModel) {
+		$usernameModel->resetUsernameFromCredentials();
 	}
 
 	public function loginToLayoutView($flashModel, $sessionModel, $usernameModel) {
@@ -90,6 +88,22 @@ class LoginView {
 
 	public function isKeepingLogin() {
 		return isset($_POST[self::$keep]);
+	}
+
+	private function setUsernameCookie() {
+	  setcookie(self::$COOKIE_NAME_STRING, self::$username, time()+36000);
+	}
+
+	private function setPasswordCookie() {
+	  setcookie(self::$COOKIE_PASSWORD_STRING, self::$password, time()+36000);
+	}
+
+	private function removeUsernameCookie() {
+	  setcookie(self::$COOKIE_NAME_STRING, NULL, time()-1);
+	}
+
+	private function removePasswordCookie() {
+	  setcookie(self::$COOKIE_PASSWORD_STRING, NULL, time()-1);
 	}
 
 }

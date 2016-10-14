@@ -43,7 +43,7 @@ class LoginController {
       }
 
       } catch (\Exception $e) {
-         $this->usernameModel->setUsernameUsedInCredentials(self::$username);
+        $this->usernameModel->setUsernameUsedInCredentials(self::$username);
         $this->fm->setFlashMessage($e->getMessage());
       } finally {
         $this->lw->loginToLayoutView($this->fm, $this->sm, $this->usernameModel);
@@ -90,32 +90,16 @@ class LoginController {
     }
   }
 
-  private function storeUserCredentialsInCookie() {
+  public function storeUserCredentialsInCookie() {
     if ($this->lw->isKeepingLogin()) {
-      $this->setUsernameCookie();
-      $this->setPasswordCookie();
+      $this->lw->setUsernameCookie();
+      $this->lw->setPasswordCookie();
     }
   }
 
-  private function removeUserCredentialsInCookie() {
-    $this->removeUsernameCookie();
-    $this->removePasswordCookie();
-  }
-
-  private function setUsernameCookie() {
-    setcookie(self::$COOKIE_NAME_STRING, self::$username, time()+36000);
-  }
-
-  private function setPasswordCookie() {
-    setcookie(self::$COOKIE_PASSWORD_STRING, self::$password, time()+36000);
-  }
-
-  private function removeUsernameCookie() {
-    setcookie(self::$COOKIE_NAME_STRING, NULL, time()-1);
-  }
-
-  private function removePasswordCookie() {
-    setcookie(self::$COOKIE_PASSWORD_STRING, NULL, time()-1);
+  public function removeUserCredentialsInCookie() {
+    $this->lw->removeUsernameCookie();
+    $this->lw->removePasswordCookie();
   }
 
 }

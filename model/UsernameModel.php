@@ -17,6 +17,12 @@ class UsernameModel {
         self::$name = $_SESSION[self::$USERNAME_SESSION_NAME];
     }
 
+    public function resetUsernameFromCredentials() {
+        if (!isset($_SESSION[self::$USERNAME_SESSION_NAME])) {
+            self::$name = '';
+        }
+    }
+
     public function getUsernameUsedInCredentials() : string {
         return self::$name;
     }
