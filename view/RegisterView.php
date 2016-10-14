@@ -2,6 +2,7 @@
 
 namespace view;
 
+require_once("GetFlashMessages.php");
 require_once('LayoutView.php');
 
 class RegisterView {
@@ -14,6 +15,7 @@ class RegisterView {
 	private static $successfull_registration = true;
 
 	public function __construct() {
+		$this->getFlashMessages = new GetFlashMessages();
 		if (!isset($_SESSION['username'])) {
 			$_SESSION['username'] = '';
 		}
@@ -21,6 +23,7 @@ class RegisterView {
 
 	public function registerToLayoutView($flashModel, $sessionModel) {
 		$rv = new LayoutView($sessionModel);
+		$this->flashModel = $flashModel;
 		$rv->toOutputBuffer($this->generateRegisterForm());
 	}
 
@@ -64,11 +67,13 @@ class RegisterView {
 	public function checkRegisterUsername() {
 		if (isset($_POST[self::$name])) {
 			if (strlen($_POST[self::$name]) < 3) {
-				self::$message .= 'Username has too few characters, at least 3 characters.<br>';
+				self::$message .= $this->getFlashMessages->setUsernameInvalidCharacters();
+				self::$message .= '<br>';
 				$_SESSION['username'] = $_POST[self::$name];
 				self::$successfull_registration = false;
 			} else if (!$this->checkForInvalidCharacters()) {
-				self::$message .= 'Username contains invalid characters.<br>';
+				self::$message .= $this->getFlashMessages->setUsernameInvalidCharacters();
+				self::$message .= '<br>';
 				self::$successfull_registration = false;
 			}
 		}
@@ -77,7 +82,8 @@ class RegisterView {
 	public function checkRegisterPassword() {
 		if (isset($_POST[self::$password])) {
 			if (strlen($_POST[self::$password]) < 6) {
-				self::$message .= 'Password has too few characters, at least 6 characters.<br>';
+				self::$message .= $this->getFlashMessages->setPasswordTooShortMessage();
+				self::$message .= '<br>';
 				self::$successfull_registration = false;
 			}
 		}
@@ -86,14 +92,14 @@ class RegisterView {
 	public function passwordsMatch() {
 		if (isset($_POST[self::$password]) && isset($_POST[self::$passwordRepeat])) {
 			if ($_POST[self::$password] !== $_POST[self::$passwordRepeat]) {
-				self::$message .= 'Passwords do not match.';
+				self::$message .= $this->getFlashMessages->setPasswordsNotMatchMessage();
 				self::$successfull_registration = false;
 			}
 		}
 	}
 
 	public function setRegisterExistsMessage() {
-		self::$message = 'User exists, pick another username.';
+		self::$message = $this->getFlashMessages->setUserAlreadyExistsMessage();
 		self::$successfull_registration = false;
 	}
 
