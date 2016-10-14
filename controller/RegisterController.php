@@ -3,7 +3,6 @@
 namespace controller;
 
 require_once('view/RegisterView.php');
-require_once('model/UserDatabase.php');
 require_once('model/FlashModel.php');
 require_once('model/SessionModel.php');
 require_once('model/DAL.php');
@@ -11,8 +10,9 @@ require_once('model/DAL.php');
 
 class RegisterController {
 
-  public function __construct(\model\FlashModel $flashModel, \model\SessionModel $sessionModel) {
+  public function __construct(\model\FlashModel $flashModel, \model\SessionModel $sessionModel, \model\UsernameModel $usernameModel) {
       $this->getFlashMessages = new \view\GetFlashMessages();
+      $this->usernameModel = $usernameModel;
       $db = new \model\DAL();
       $this->rw = new \view\RegisterView();
       $this->sm = $sessionModel;

@@ -16,12 +16,13 @@ class LoginView {
 	private static $messageId = 'LoginView::Message';
 
 	public function __construct() {
-		if (!isset($_SESSION['username'])) {
-			$_SESSION['username'] = '';
-		}
+		// if (!isset($_SESSION['username'])) {
+		// 	$_SESSION['username'] = '';
+		// }
 	}
 
-	public function loginToLayoutView($flashModel, $sessionModel) {
+	public function loginToLayoutView($flashModel, $sessionModel, $usernameModel) {
+		$this->usernameModel = $usernameModel;
 		$this->sessionModel = $sessionModel;
 		$this->lv = new LayoutView($sessionModel);
 		$this->flashModel = $flashModel;
@@ -42,7 +43,7 @@ class LoginView {
 						<p id="' . self::$messageId . '">' . $message . '</p>
 
 						<label for="' . self::$name . '">Username :</label>
-						<input type="text" id="' . self::$name . '" name="' . self::$name . '" value="' . $_SESSION['username'] . '" />
+						<input type="text" id="' . self::$name . '" name="' . self::$name . '" value="' . $this->usernameModel->getUsernameUsedInCredentials() . '" />
 
 						<label for="' . self::$password . '">Password :</label>
 						<input type="password" id="' . self::$password . '" name="' . self::$password . '" />
@@ -63,12 +64,6 @@ class LoginView {
 				<input type="submit" name="' . self::$logout . '" value="logout"/>
 			</form>
 		';
-	}
-
-	private function setUsernameValue() {
-		if (isset($_POST[self::$name])) {
-			return $_POST[self::$name];
-		}
 	}
 
 	public function getUsername() {

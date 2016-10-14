@@ -12,13 +12,16 @@ class UsernameModel {
         }
     }
 
-    public function setUsernameUsedInCredentials(bool $enteredUsername) {
+    public function setUsernameUsedInCredentials(string $enteredUsername) {
         $_SESSION[self::$USERNAME_SESSION_NAME] = $enteredUsername;
         self::$name = $_SESSION[self::$USERNAME_SESSION_NAME];
     }
 
-    public function getUsernameUsedInCredentials() : bool {
+    public function getUsernameUsedInCredentials() : string {
         return self::$name;
     }
 
+    public function removeStoredUsername() {
+        self::$name = '';
+    }
 }

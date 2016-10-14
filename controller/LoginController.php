@@ -2,13 +2,12 @@
 
 namespace controller;
 
-require_once("view/LoginView.php");
-require_once("view/GetFlashMessages.php");
-require_once("model/UserDatabase.php");
-require_once("model/FlashModel.php");
+require_once('view/LoginView.php');
+require_once('view/GetFlashMessages.php');
+require_once('model/FlashModel.php');
 require_once('model/DAL.php');
-require_once("model/SessionModel.php");
-require_once("view/GetFlashMessages.php");
+require_once('model/SessionModel.php');
+require_once('view/GetFlashMessages.php');
 
 class LoginController {
   private static $COOKIE_NAME_STRING = 'Username';
@@ -16,9 +15,10 @@ class LoginController {
   private static $username = '';
   private static $password = '';
 
-  public function __construct(\model\FlashModel $flashModel, \model\SessionModel $sessionModel) {
+  public function __construct(\model\FlashModel $flashModel, \model\SessionModel $sessionModel, \model\UsernameModel $usernameModel) {
     $this->getFlashMessages = new \view\GetFlashMessages();
-    $this->lw = new \view\LoginView();
+    $this->usernameModel = $usernameModel;
+    $this->lw = new \view\LoginView($this->usernameModel);
     $this->db = new \model\DAL();
     $this->sm = $sessionModel;
     $this->fm = $flashModel;
@@ -36,17 +36,17 @@ class LoginController {
           $this->storeUserCredentialsInCookie();
         } else if ($this->lw->isLoggingOut() && $this->sm->getIsLoggedIn()) {
           $this->removeUserCredentialsInCookie();
-          $_SESSION['username'] = '';
+          $this->usernameModel->removeStoredUsername();
           $this->sm->setIsLoggedIn(false);
           $this->fm->setFlashMessage($this->getFlashMessages->setLogoutMessage());
         }
       }
 
       } catch (\Exception $e) {
-        $_SESSION['username'] = self::$username;
+         $this->usernameModel->setUsernameUsedInCredentials(self::$username);
         $this->fm->setFlashMessage($e->getMessage());
       } finally {
-        $this->lw->loginToLayoutView($this->fm, $this->sm);
+        $this->lw->loginToLayoutView($this->fm, $this->sm, $this->usernameModel);
         if ($this->lw->isLoggingIn() || $this->lw->isLoggingOut()) {
           header('Location: /');
           exit();
