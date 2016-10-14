@@ -36,7 +36,7 @@ class RegisterController {
           }
 
       } catch (\Exception $e) {
-          $_SESSION['message'] = $e->getMessage();
+          $this->fm->setFlashMessage($e->getMessage());
       } finally {
           $this->rw->registerToLayoutView($this->fm, $this->sm);
       }
