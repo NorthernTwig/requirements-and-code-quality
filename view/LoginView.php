@@ -18,6 +18,7 @@ class LoginView {
 	private static $messageId = 'LoginView::Message';
 
 	public function __construct($usernameModel) {
+		$this->getFlashMessages = new \view\GetFlashMessages();
 		$usernameModel->resetUsernameFromCredentials();
 	}
 
@@ -78,6 +79,26 @@ class LoginView {
 			throw new \NoPasswordException('Password is missing');
 		}
 		return $_POST[self::$password];
+	}
+
+	public function getWelcomeRemember() {
+		$this->getFlashMessages->setWelcomeRemember();
+	}
+
+	public function getWelcomeCookie() {
+		$this->getFlashMessages->setWelcomeCookie();
+	}
+
+	public function getWelcomeStandard() {
+		$this->getFlashMessages->setWelcomeStandard();
+	}
+
+	public function getWrongUsernameMessage() {
+		$this->getFlashMessages->setWrongUsernameMessage();
+	}
+
+	public function getWrongPasswordMessage() {
+		$this->getFlashMessages->setWrongUsernameMessage();
 	}
 
 	public function isLoggingIn() {
