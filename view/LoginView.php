@@ -3,6 +3,7 @@
 namespace view;
 
 require_once('LayoutView.php');
+require_once('GetFlashMessages.php');
 require_once('model/FlashModel.php');
 require_once('exceptions/NoUsernameException.php');
 require_once('exceptions/NoPasswordException.php');
@@ -16,6 +17,9 @@ class LoginView {
 	private static $cookiePassword = 'LoginView::CookiePassword';
 	private static $keep = 'LoginView::KeepMeLoggedIn';
 	private static $messageId = 'LoginView::Message';
+	private static $COOKIE_NAME_STRING = 'Username';
+    private static $COOKIE_PASSWORD_STRING = 'Password';
+
 
 	public function __construct($usernameModel) {
 		$this->getFlashMessages = new \view\GetFlashMessages();
@@ -67,66 +71,94 @@ class LoginView {
 		';
 	}
 
-	public function getUsername() {
+	public function getUsername() : string {
 			if (strlen($_POST[self::$name]) == 0) {
 				throw new \NoUsernameException('Username is missing');
 			}
 		return $_POST[self::$name];
 	}
 
-	public function getPassword() {
+	public function getPassword() : string {
 		if (strlen($_POST[self::$password]) == 0) {
 			throw new \NoPasswordException('Password is missing');
 		}
 		return $_POST[self::$password];
 	}
 
-	public function getWelcomeRemember() {
-		$this->getFlashMessages->setWelcomeRemember();
+	public function getWelcomeRemember() : string {
+		return $this->getFlashMessages->setWelcomeRemember();
 	}
 
-	public function getWelcomeCookie() {
-		$this->getFlashMessages->setWelcomeCookie();
+	public function getWelcomeCookie() : string {
+		return $this->getFlashMessages->setWelcomeCookie();
 	}
 
-	public function getWelcomeStandard() {
-		$this->getFlashMessages->setWelcomeStandard();
+	public function getWelcomeStandard() : string {
+		return $this->getFlashMessages->setWelcomeStandard();
 	}
 
-	public function getWrongUsernameMessage() {
-		$this->getFlashMessages->setWrongUsernameMessage();
+	public function getWrongUsernameMessage() : string {
+		return $this->getFlashMessages->setWrongUsernameMessage();
 	}
 
-	public function getWrongPasswordMessage() {
-		$this->getFlashMessages->setWrongUsernameMessage();
+	public function getWrongPasswordMessage() : string {
+		return $this->getFlashMessages->setWrongPasswordMessage();
 	}
 
-	public function isLoggingIn() {
+	public function getWrongCredentials() : string {
+		return $this->getFlashMessages->setWrongCredentials();
+	}
+
+	public function getLogoutMessage() : string {
+		return $this->getFlashMessages->setLogoutMessage();
+	}
+
+	public function isLoggingIn() : bool {
 		return isset($_POST[self::$login]);
 	}
 
-	public function isLoggingOut() {
+	public function isLoggingOut() : bool {
 		return isset($_POST[self::$logout]);
 	}
 
-	public function isKeepingLogin() {
+	public function isKeepingLogin() : bool {
 		return isset($_POST[self::$keep]);
 	}
 
-	private function setUsernameCookie() {
-	  setcookie(self::$COOKIE_NAME_STRING, self::$username, time()+36000);
+	public function hasUsernameCookie() {
+		return isset($_COOKIE[self::$COOKIE_NAME_STRING]);
 	}
 
-	private function setPasswordCookie() {
-	  setcookie(self::$COOKIE_PASSWORD_STRING, self::$password, time()+36000);
+	public function hasPasswordCookie() {
+		return isset($_COOKIE[self::$COOKIE_PASSWORD_STRING]);
 	}
 
-	private function removeUsernameCookie() {
-	  setcookie(self::$COOKIE_NAME_STRING, NULL, time()-1);
+	public function getUsernameCookie() {
+		return $_COOKIE[self::$COOKIE_NAME_STRING];
 	}
 
-	private function removePasswordCookie() {
-	  setcookie(self::$COOKIE_PASSWORD_STRING, NULL, time()-1);
+	public function getCookie() {
+		return $_COOKIE;
+	}
+
+	public function getPasswordCookie() {
+		return $_COOKIE[self::$COOKIE_PASSWORD_STRING];
+	}
+
+	public function setUsernameCookie() {
+	  	setcookie(self::$COOKIE_NAME_STRING, $_POST[self::$name], time()+36000);
+	}
+
+	public function setPasswordCookie() {
+	  	setcookie(self::$COOKIE_PASSWORD_STRING, $_POST[self::$password], time()+36000);
+	}
+
+	public function removeUsernameCookie() {
+	  	setcookie(self::$COOKIE_NAME_STRING, NULL, time()-1);
+	}
+
+	public function removePasswordCookie() {
+	  	setcookie(self::$COOKIE_PASSWORD_STRING, NULL, time()-1);
 	}
 
 }
