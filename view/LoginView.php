@@ -9,6 +9,7 @@ require_once('exceptions/NoUsernameException.php');
 require_once('exceptions/NoPasswordException.php');
 
 class LoginView {
+
 	private static $login = 'LoginView::Login';
 	private static $logout = 'LoginView::Logout';
 	private static $name = 'LoginView::UserName';
@@ -73,14 +74,14 @@ class LoginView {
 
 	public function getUsername() : string {
 			if (strlen($_POST[self::$name]) == 0) {
-				throw new \NoUsernameException('Username is missing');
+				throw new \NoUsernameException('No username entered.');
 			}
 		return $_POST[self::$name];
 	}
 
 	public function getPassword() : string {
 		if (strlen($_POST[self::$password]) == 0) {
-			throw new \NoPasswordException('Password is missing');
+			throw new \NoPasswordException('No password entered.');
 		}
 		return $_POST[self::$password];
 	}
@@ -137,28 +138,24 @@ class LoginView {
 		return $_COOKIE[self::$COOKIE_NAME_STRING];
 	}
 
-	public function getCookie() {
-		return $_COOKIE;
-	}
-
 	public function getPasswordCookie() {
 		return $_COOKIE[self::$COOKIE_PASSWORD_STRING];
 	}
 
 	public function setUsernameCookie() {
-	  	setcookie(self::$COOKIE_NAME_STRING, $_POST[self::$name], time()+36000);
+	  	setcookie(self::$COOKIE_NAME_STRING, $_POST[self::$name], time() + 36000);
 	}
 
 	public function setPasswordCookie() {
-	  	setcookie(self::$COOKIE_PASSWORD_STRING, $_POST[self::$password], time()+36000);
+	  	setcookie(self::$COOKIE_PASSWORD_STRING, $_POST[self::$password], time() + 36000);
 	}
 
 	public function removeUsernameCookie() {
-	  	setcookie(self::$COOKIE_NAME_STRING, NULL, time()-1);
+	  	setcookie(self::$COOKIE_NAME_STRING, NULL, time() - 1 );
 	}
 
 	public function removePasswordCookie() {
-	  	setcookie(self::$COOKIE_PASSWORD_STRING, NULL, time()-1);
+	  	setcookie(self::$COOKIE_PASSWORD_STRING, NULL, time() - 1 );
 	}
 
 }

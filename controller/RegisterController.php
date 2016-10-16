@@ -14,7 +14,7 @@ class RegisterController {
       $this->getFlashMessages = new \view\GetFlashMessages();
       $this->usernameModel = $usernameModel;
       $db = new \model\DAL();
-      $this->rw = new \view\RegisterView();
+      $this->rw = new \view\RegisterView($this->usernameModel);
       $this->sm = $sessionModel;
       $this->fm = $flashModel;
 

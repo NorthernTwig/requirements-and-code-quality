@@ -14,11 +14,9 @@ class RegisterView {
 	private static $message = '';
 	private static $successfull_registration = true;
 
-	public function __construct() {
+	public function __construct($usernameModel) {
 		$this->getFlashMessages = new GetFlashMessages();
-		if (!isset($_SESSION['username'])) {
-			$_SESSION['username'] = '';
-		}
+		$usernameModel->resetUsernameFromCredentials();
 	}
 
 	public function registerToLayoutView($flashModel, $sessionModel) {

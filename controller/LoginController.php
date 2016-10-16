@@ -34,6 +34,8 @@ class LoginController {
                 $this->fm->setFlashMessage($this->lv->getWrongUsernameMessage());
         } catch (\NoPasswordException $e) {
                 $this->fm->setFlashMessage($this->lv->getWrongPasswordMessage());
+        } catch (\WrongCredentialsException $e) {
+                $this->fm->setFlashMessage($this->lv->getWrongCredentials());
         } catch (\Exception $e) {
                 $this->fm->setFlashMessage($e->getMessage());
         } finally {
@@ -101,9 +103,10 @@ class LoginController {
 
             $this->sm->setIsLoggedIn(true);
 
-        } else if (strlen(self::$password) > 0 || strlen(self::$username) > 0) {
-            $this->fm->setFlashMessage($this->lv->getWrongCredentials());
         }
+        //  else if (strlen(self::$password) > 0 || strlen(self::$username) > 0) {
+        //     $this->fm->setFlashMessage($this->lv->getWrongCredentials());
+        // }
 
     }
 

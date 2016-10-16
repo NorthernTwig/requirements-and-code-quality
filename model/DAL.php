@@ -2,6 +2,8 @@
 
 namespace model;
 
+require_once('exceptions/WrongCredentialsException.php');
+
 class DAL {
     private static $REGISTER_SUCCESS = false;
 
@@ -22,6 +24,10 @@ class DAL {
       if ($accounts[$i]['username'] === $enteredUsername && $accounts[$i]['password'] === $enteredPassword) {
         $isCredentialsCorrect = true;
       }
+    }
+
+    if (!$isCredentialsCorrect) {
+        throw new \WrongCredentialsException('User credentials are allllll wronk.');
     }
 
     return $isCredentialsCorrect;
