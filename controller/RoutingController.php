@@ -15,7 +15,7 @@ class RoutingController {
     $this->fm = new \model\FlashModel();
     $this->um = new \model\UsernameModel();
 
-    $_SESSION['message'] = '';
+    $this->fm->removeFlashMessage();
 
     $isRegisterView = isset($_GET['register']);
 
