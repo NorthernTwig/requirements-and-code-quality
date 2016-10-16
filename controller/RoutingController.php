@@ -1,31 +1,45 @@
 <?php
 
-namespace controller;
+    namespace controller;
 
-require_once("LoginController.php");
-require_once("RegisterController.php");
-require_once("model/FlashModel.php");
-require_once("model/SessionModel.php");
-require_once("model/UsernameModel.php");
+    require_once("LoginController.php");
+    require_once("RegisterController.php");
+    require_once("model/FlashModel.php");
+    require_once("model/SessionModel.php");
+    require_once("model/UsernameModel.php");
 
-class RoutingController {
+    class RoutingController {
 
-  public function __construct() {
-    $this->sm = new \model\SessionModel();
-    $this->fm = new \model\FlashModel();
-    $this->um = new \model\UsernameModel();
+        public function __construct() {
+            $this->sm = new \model\SessionModel();
+            $this->fm = new \model\FlashModel();
+            $this->um = new \model\UsernameModel();
 
-    $this->fm->removeFlashMessage();
+            $this->isRegisterView = isset($_GET['register']);
 
-    $isRegisterView = isset($_GET['register']);
+            $this->route();
 
-    switch ($isRegisterView) {
-      case false:
-        new LoginController($this->fm, $this->sm, $this->um);
-        break;
-      case true:
-        new RegisterController($this->fm, $this->sm, $this->um);
-        break;
-    }
-  }
+            $this->fm->setFlashMessage('');
+
+        }
+
+        private function route() {
+            switch ($this->isRegisterView) {
+                case false:
+                    $this->createLogin();
+                    break;
+                case true:
+                    $this->createRegister();
+                    break;
+            }
+        }
+
+        private function createLogin() {
+            new LoginController($this->fm, $this->sm, $this->um);
+        }
+
+        private function createRegister() {
+            new RegisterController($this->fm, $this->sm, $this->um);
+        }
+
 }

@@ -17,6 +17,12 @@ class FlashModel {
         self::$message = $_SESSION[self::$MESSAGE_SESSION_NAME];
     }
 
+    public function resetMessageFromCredentials() {
+        if (isset($_SESSION[self::$MESSAGE_SESSION_NAME])) {
+            self::$message = '';
+        }
+    }
+
     public function removeFlashMessage() {
         self::$message = '';
     }
