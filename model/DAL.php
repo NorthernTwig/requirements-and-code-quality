@@ -34,6 +34,16 @@ class DAL {
 
   }
 
+  public function validateUsername(string $username) : bool {
+      preg_match('/^[a-zA-Z0-9]+$/', $username, $matches);
+      return count($matches) > 0;
+  }
+
+  public function stripUsername(string $username) : string {
+      $cleanedUsername = strip_tags($username);
+      return $cleanedUsername;
+  }
+
   public function compareUsername($enteredUsername) {
     $accounts = $this->decodeJson();
     $usernameExists = false;

@@ -26,9 +26,9 @@
 		}
 
 		public function loginToLayoutView($flashModel, $sessionModel, $usernameModel) {
-			$this->usernameModel = $usernameModel;
 			$this->sessionModel = $sessionModel;
-			$this->lv = new LayoutView($sessionModel);
+			$this->lv = new LayoutView($this->sessionModel);
+			$this->usernameModel = $usernameModel;
 			$this->flashModel = $flashModel;
 			$this->flashMessage = $this->flashModel->getFlashMessage();
 

@@ -20,12 +20,13 @@ class RegisterView {
 	}
 
 	public function registerToLayoutView($flashModel, $sessionModel) {
-		$rv = new LayoutView($sessionModel);
+		// $rv = new LayoutView($sessionModel);
+		$this->layoutView = new LayoutView($sessionModel);
 		$this->flashModel = $flashModel;
-		$rv->toOutputBuffer($this->generateRegisterForm());
+		$this->layoutView->toOutputBuffer($this->generateRegisterForm());
 	}
 
-	private function generateRegisterForm() {
+	private function generateRegisterForm() : string {
 		return '
 		<h2>Register new user</h2>
 			<form action="?register" method="post" enctype="multipart/form-data">
@@ -56,24 +57,24 @@ class RegisterView {
 		return $cleanedUsername;
 	}
 
-	private function checkForInvalidCharacters() {
-		preg_match('/^[a-zA-Z0-9]+$/', $_POST[self::$name], $matches);
-		$_SESSION['username'] = $this->cleanUpUsername($_POST[self::$name]);
-		return count($matches) > 0;
-	}
+
 
 	public function checkRegisterUsername() {
+		// if (isset($_POST[self::$name])) {
+		// 	if (strlen($_POST[self::$name]) < 3) {
+		// 		self::$message .= $this->getFlashMessages->setUsernameInvalidCharacters();
+		// 		self::$message .= '<br>';
+		// 		$_SESSION['username'] = $_POST[self::$name];
+		// 		self::$successfull_registration = false;
+		// 	} else if (!$this->checkForInvalidCharacters()) {
+		// 		self::$message .= $this->getFlashMessages->setUsernameInvalidCharacters();
+		// 		self::$message .= '<br>';
+		// 		self::$successfull_registration = false;
+		// 	}
+		// }
+
 		if (isset($_POST[self::$name])) {
-			if (strlen($_POST[self::$name]) < 3) {
-				self::$message .= $this->getFlashMessages->setUsernameInvalidCharacters();
-				self::$message .= '<br>';
-				$_SESSION['username'] = $_POST[self::$name];
-				self::$successfull_registration = false;
-			} else if (!$this->checkForInvalidCharacters()) {
-				self::$message .= $this->getFlashMessages->setUsernameInvalidCharacters();
-				self::$message .= '<br>';
-				self::$successfull_registration = false;
-			}
+			return $_POST[self::$name];
 		}
 	}
 
@@ -119,10 +120,12 @@ class RegisterView {
 
 	public function isRegistering() {
 		if (isset($_POST[self::$register])) {
-			if ($_POST[self::$register] != NULL) {
-				return true;
-			}
+			return true;
 		}
+	}
+
+	public function getUsernameInvalidCharacters() : string {
+		return $this->getFlashMessages->setUsernameInvalidCharacters();
 	}
 
 }
