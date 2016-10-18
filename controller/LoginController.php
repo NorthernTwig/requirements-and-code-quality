@@ -44,10 +44,16 @@
             } catch (\Exception $e) {
                 $this->flashModel->setFlashMessage($e->getMessage());
             } finally {
-                $this->usernameModel->setUsernameUsedInCredentials(self::$username);
+                $this->checkIfStoreUsername();
                 $this->lv->loginToLayoutView($this->flashModel, $this->sessionModel, $this->usernameModel);
                 $this->flashModel->setFlashMessage('');
 
+            }
+        }
+
+        private function checkIfStoreUsername() {
+            if (strlen(self::$username) > 0) {
+                $this->usernameModel->setUsernameUsedInCredentials(self::$username);
             }
         }
 

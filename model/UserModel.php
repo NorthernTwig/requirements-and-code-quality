@@ -51,9 +51,4 @@ class UserModel {
 
     }
 
-    public function stripUsername(string $username) : string {
-        $cleanedUsername = strip_tags($username);
-        return $cleanedUsername;
-    }
-
 }

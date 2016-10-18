@@ -18,7 +18,7 @@ class RegisterView {
 	public function __construct($usernameModel) {
 		$this->getFlashMessages = new GetFlashMessages();
 		$this->usernameModel = $usernameModel;
-		$this->usernameModel->resetUsernameFromCredentials();
+		// $this->usernameModel->resetUsernameFromCredentials();
 	}
 
 	public function registerToLayoutView($flashModel, $sessionModel) {
@@ -118,6 +118,10 @@ class RegisterView {
 
 	public function getNoEnteredCredentials() : string {
 		return $this->getFlashMessages->setNoEnteredCredentials();
+	}
+
+	public function getNewRegisterMessage() : string {
+		return $this->getFlashMessages->setNewRegisterMessage();
 	}
 
 }

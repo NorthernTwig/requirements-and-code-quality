@@ -26,6 +26,7 @@ class RegisterController extends BaseController {
                 $user = new \model\UserModel($username, $password, $passwordMatch);
                 $this->db->compareUsernameWithDatabase($username);
                 $this->db->addUserToDB($user);
+                $this->flashModel->setFlashMessage($this->rw->getNewRegisterMessage());
                 header('Location: /');
                 exit();
             }

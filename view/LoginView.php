@@ -45,7 +45,7 @@
 					<form method="post">
 						<fieldset>
 							<legend>Login - enter Username and password</legend>
-							<p id="' . self::$messageId . '">' . $this->flashModel->getFlashMessage() . '</p>
+							<p id="' . self::$messageId . '">' . $message . '</p>
 							<label for="' . self::$name . '">Username :</label>
 							<input type="text" id="' . self::$name . '" name="' . self::$name . '" value="' . strip_tags($this->getLoginName()) . '" />
 							<label for="' . self::$password . '">Password :</label>
@@ -65,7 +65,7 @@
 		private function generateLogoutButtonHTML($message) {
 			return '
 				<form  method="post" >
-					<p id="' . self::$messageId . '">' . $this->flashModel->getFlashMessage() .'</p>
+					<p id="' . self::$messageId . '">' . $message .'</p>
 					<input type="submit" name="' . self::$logout . '" value="logout"/>
 				</form>
 			';
