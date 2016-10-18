@@ -28,7 +28,7 @@ class LoginView {
 
 	public function loginToLayoutView($flashModel, $sessionModel, $usernameModel) {
 		$this->sessionModel = $sessionModel;
-		$this->lv = new LayoutView($this->sessionModel);
+		$this->lv = new LayoutView($this->sessionModel, false);
 		$this->usernameModel = $usernameModel;
 		$this->flashModel = $flashModel;
 		$this->flashMessage = $this->flashModel->getFlashMessage();
@@ -41,21 +41,21 @@ class LoginView {
 	}
 
 	private function generateLoginForm($message) {
-			return '
-				<form method="post">
-					<fieldset>
-						<legend>Login - enter Username and password</legend>
-						<p id="' . self::$messageId . '">' . $message . '</p>
-						<label for="' . self::$name . '">Username :</label>
-						<input type="text" id="' . self::$name . '" name="' . self::$name . '" value="' . strip_tags($this->getLoginName()) . '" />
-						<label for="' . self::$password . '">Password :</label>
-						<input type="password" id="' . self::$password . '" name="' . self::$password . '" />
-						<label for="' . self::$keep . '">Keep me logged in  :</label>
-						<input type="checkbox" id="' . self::$keep . '" name="' . self::$keep . '" />
-						<input type="submit" name="' . self::$login . '" value="login" />
-					</fieldset>
-				</form>
-			';
+		return '
+			<form method="post">
+				<fieldset>
+					<legend>Login - enter Username and password</legend>
+					<p id="' . self::$messageId . '">' . $message . '</p>
+					<label for="' . self::$name . '">Username :</label>
+					<input type="text" id="' . self::$name . '" name="' . self::$name . '" value="' . strip_tags($this->getLoginName()) . '" />
+					<label for="' . self::$password . '">Password :</label>
+					<input type="password" id="' . self::$password . '" name="' . self::$password . '" />
+					<label for="' . self::$keep . '">Keep me logged in  :</label>
+					<input type="checkbox" id="' . self::$keep . '" name="' . self::$keep . '" />
+					<input type="submit" name="' . self::$login . '" value="login" />
+				</fieldset>
+			</form>
+		';
 	}
 
 	private function getLoginName() {

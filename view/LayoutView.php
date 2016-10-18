@@ -6,8 +6,9 @@ require_once('DateTimeView.php');
 
 class LayoutView {
 
-    public function __construct($sessionModel) {
+    public function __construct($sessionModel, $isRegisterView) {
         $this->date = new DateTimeView();
+        $this->isRegisterView = $isRegisterView;
         $this->sessionModel = $sessionModel;
     }
 
@@ -47,7 +48,7 @@ class LayoutView {
         if ($this->sessionModel->getIsLoggedIn()) {
             return '';
         } else {
-            if (isset($_GET['register'])) {
+            if ($this->isRegisterView) {
                 return '<a href="/">Back to login</a>';
             } else {
                 return '<a href="?register">Register a new user</a>';

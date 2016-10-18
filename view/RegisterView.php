@@ -14,7 +14,6 @@ class RegisterView {
 	private static $passwordRepeat = 'RegisterView::PasswordRepeat';
 	private static $register = 'RegisterView::Register';
 	private static $message = '';
-	private static $successfull_registration = true;
 
 	public function __construct($usernameModel) {
 		$this->getFlashMessages = new GetFlashMessages();
@@ -22,7 +21,7 @@ class RegisterView {
 	}
 
 	public function registerToLayoutView($flashModel, $sessionModel) {
-		$this->layoutView = new LayoutView($sessionModel);
+		$this->layoutView = new LayoutView($sessionModel, true);
 		$this->flashModel = $flashModel;
 		$this->layoutView->toOutputBuffer($this->generateRegisterForm());
 	}
