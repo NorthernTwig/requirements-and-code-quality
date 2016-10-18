@@ -62,5 +62,4 @@ class GetFlashMessages {
         $combinedString .= $this->setPasswordTooShortMessage();
         return $combinedString;
     }
-
 }

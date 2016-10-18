@@ -3,6 +3,7 @@
 namespace model;
 
 class UsernameModel {
+
     private static $USERNAME_SESSION_NAME = 'username';
     private static $name = '';
 

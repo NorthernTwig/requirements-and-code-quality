@@ -3,6 +3,7 @@
 namespace model;
 
 class FlashModel {
+
     private static $MESSAGE_SESSION_NAME = 'message';
     private static $message = '';
 
@@ -30,5 +31,4 @@ class FlashModel {
     public function getFlashMessage() {
         return self::$message;
     }
-
 }

@@ -7,6 +7,7 @@ require_once("model/UserModel.php");
 require_once('LayoutView.php');
 
 class RegisterView {
+
 	private static $messageId = 'RegisterView::Message';
 	private static $name = 'RegisterView::UserName';
 	private static $password = 'RegisterView::Password';
@@ -18,7 +19,6 @@ class RegisterView {
 	public function __construct($usernameModel) {
 		$this->getFlashMessages = new GetFlashMessages();
 		$this->usernameModel = $usernameModel;
-		// $this->usernameModel->resetUsernameFromCredentials();
 	}
 
 	public function registerToLayoutView($flashModel, $sessionModel) {
@@ -29,24 +29,25 @@ class RegisterView {
 
 	private function generateRegisterForm() : string {
 		return '
-		<h2>Register new user</h2>
+			<h2>Register new user</h2>
 			<form action="?register" method="post" enctype="multipart/form-data">
-			<fieldset>
-				<legend>Register a new user - Write username and password</legend>
-				<p id="' . self::$messageId . '">' . $this->getMessage() . '</p>
-				<label for="' . self::$name . '">Username :</label>
-				<input type="text" size="20" name="' . self::$name . '" id="' . self::$name . '" value="' . strip_tags($this->getRegisterName()) . '">
-				<br>
-				<label for="' . self::$password . '">Password  :</label>
-				<input type="password" size="20" name="' . self::$password . '" id="' . self::$password . '" value="">
-				<br>
-				<label for="' . self::$passwordRepeat . '">Repeat password  :</label>
-				<input type="password" size="20" name="' . self::$passwordRepeat . '" id="' . self::$passwordRepeat . '" value="">
-				<br>
-				<input id="submit" type="submit" name="' . self::$register . '" value="Register">
-				<br>
-			</fieldset>
-		</form>';
+				<fieldset>
+					<legend>Register a new user - Write username and password</legend>
+					<p id="' . self::$messageId . '">' . $this->getMessage() . '</p>
+					<label for="' . self::$name . '">Username :</label>
+					<input type="text" size="20" name="' . self::$name . '" id="' . self::$name . '" value="' . strip_tags($this->getRegisterName()) . '">
+					<br>
+					<label for="' . self::$password . '">Password  :</label>
+					<input type="password" size="20" name="' . self::$password . '" id="' . self::$password . '" value="">
+					<br>
+					<label for="' . self::$passwordRepeat . '">Repeat password  :</label>
+					<input type="password" size="20" name="' . self::$passwordRepeat . '" id="' . self::$passwordRepeat . '" value="">
+					<br>
+					<input id="submit" type="submit" name="' . self::$register . '" value="Register">
+					<br>
+				</fieldset>
+			</form>
+		';
 	}
 
 	private function getRegisterName() {
@@ -65,7 +66,6 @@ class RegisterView {
 
 	public function setRegisterExistsMessage() {
 		self::$message = $this->getFlashMessages->setUserAlreadyExistsMessage();
-		self::$successfull_registration = false;
 	}
 
 	public function getUsernameForRegister() {

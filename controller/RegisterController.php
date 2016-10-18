@@ -50,7 +50,5 @@ class RegisterController extends BaseController {
         } finally {
             $this->rw->registerToLayoutView($this->flashModel, $this->sessionModel);
         }
-
     }
-
 }

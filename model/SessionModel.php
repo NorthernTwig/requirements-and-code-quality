@@ -3,6 +3,7 @@
 namespace model;
 
 class SessionModel {
+
     private static $LOGIN_SESSION_NAME = 'isLoggedIn';
     private static $isLoggedIn = false;
 
@@ -20,5 +21,4 @@ class SessionModel {
     public function getIsLoggedIn() : bool {
         return self::$isLoggedIn;
     }
-
 }

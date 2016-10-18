@@ -7,26 +7,27 @@ require_once('exceptions/UserAlreadyExistException.php');
 
 
 class DAL {
+
     private static $USERNAME_SEARCH_STRING = 'username';
     private static $PASSWORD_SEARCH_STRING = 'password';
-
+    private static $DATABASE_LOCATION = './database/UserCredentials.json';
 
     public function __construct() {
-        $this->jsonString = file_get_contents('./database/UserCredentials.json');
-      }
+        $this->jsonString = file_get_contents($DATABASE_LOCATION);
+    }
 
     public function decodeJson() {
         return json_decode($this->jsonString, true);
-      }
+    }
 
     public function compareCredentials($enteredUsername, $enteredPassword) {
         $accounts = $this->decodeJson();
         $isCredentialsCorrect = false;
 
         for ($i = 0; $i < count($accounts); $i++) {
-          if ($accounts[$i][self::$USERNAME_SEARCH_STRING] === $enteredUsername && $accounts[$i][self::$PASSWORD_SEARCH_STRING] === $enteredPassword) {
-            $isCredentialsCorrect = true;
-          }
+            if ($accounts[$i][self::$USERNAME_SEARCH_STRING] === $enteredUsername && $accounts[$i][self::$PASSWORD_SEARCH_STRING] === $enteredPassword) {
+                $isCredentialsCorrect = true;
+            }
         }
 
         if (!$isCredentialsCorrect) {
@@ -34,38 +35,38 @@ class DAL {
         }
 
         return $isCredentialsCorrect;
-
-      }
+    }
 
     public function compareUsernameWithDatabase($enteredUsername) {
         $accounts = $this->decodeJson();
         $usernameExists = false;
 
         for ($i = 0; $i < count($accounts); $i++) {
-          if ($accounts[$i][self::$USERNAME_SEARCH_STRING] === $enteredUsername) {
-            $usernameExists = true;
-          }
+            if ($accounts[$i][self::$USERNAME_SEARCH_STRING] === $enteredUsername) {
+                $usernameExists = true;
+            }
         }
 
         if ($usernameExists) {
             throw new \UserAlreadyExistException('User tried to create existing user');
         }
-
-      }
+    }
 
     public function addUserToDB($user) {
         $json = $this->decodeJson();
         $newCredArray = array();
         $newCredArray = $user;
+
         array_push($json, $newCredArray);
+
         if ($user !== NULL ) {
-          $this->saveDB($json);
+            $this->saveDB($json);
         }
-      }
+    }
 
     public function saveDB($newJson) {
         $encodedJson = json_encode($newJson);
-        file_put_contents('./database/UserCredentials.json', $encodedJson);
-      }
+        file_put_contents($DATABASE_LOCATION, $encodedJson);
+    }
 
 }

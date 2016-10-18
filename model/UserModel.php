@@ -9,6 +9,7 @@ require_once('exceptions/PasswordTooShortException.php');
 require_once('exceptions/PasswordsDoNotMatchException.php');
 
 class UserModel {
+
     public function __construct(string $username, string $password, string $passwordMatch) {
         $this->username = $username;
         $this->password = $password;
@@ -48,7 +49,5 @@ class UserModel {
         if ($this->password !== $this->passwordMatch) {
             throw new \PasswordsDoNotMatchException('User entered two different passwords.');
         }
-
     }
-
 }
