@@ -14,6 +14,8 @@ class RegisterController extends BaseController {
     public function __construct() {
         parent::__construct();
         $this->rw = new \view\RegisterView($this->usernameModel);
+        $this->flashModel->resetMessageFromCredentials();
+
 
         try {
 
@@ -21,10 +23,27 @@ class RegisterController extends BaseController {
                 $this->checkEnteredDetails();
             }
 
+        } catch (\InvalidSymbolsUsernameException $e) {
+            $cleanUsername = $this->db->stripUsername($this->usernameModel->getUsernameUsedInCredentials());
+            $this->usernameModel->setUsernameUsedInCredentials($cleanUsername);
+            $this->flashModel->setFlashMessage($this->rw->getUsernameInvalidCharacters());
+        } catch (\UsernameTooShortException $e) {
+            $this->flashModel->setFlashMessage($this->rw->getUsernameTooShortMessage());
+        } catch (\UsernameTooShortException $e) {
+            $this->flashModel->setFlashMessage($this->rw->getUsernameTooShortMessage());
+        } catch (\PasswordTooShortException $e) {
+           $this->flashModel->setFlashMessage($this->rw->getPasswordTooShortMessage());
+        } catch (\PasswordsDoNotMatchException $e) {
+            $this->flashModel->setFlashMessage($this->rw->getPasswordsNotMatchMessage());
         } catch (\Exception $e) {
             var_dump($e->getMessage());
         } finally {
             $this->rw->registerToLayoutView($this->flashModel, $this->sessionModel);
+            // if ($this->rw->registerSuccessfull()) {
+                // $this->flashModel->setFlashMessage('nytt');
+                // header('Location: /');
+                // exit();
+            // }
         }
 
         // try {
@@ -45,18 +64,20 @@ class RegisterController extends BaseController {
 
         private function checkEnteredDetails() {
             $this->usernameValidation();
-            // $this->rw->checkRegisterPassword();
+            $this->passwordValidation();
             // $this->rw->passwordsMatch();
         }
 
+        private function passwordValidation() {
+            $password = $this->rw->getPasswordForRegister();
+            $passwordMatch = $this->rw->getPasswordMatchForRegister();
+            $this->db->validatePassword($password, $passwordMatch);
+        }
+
         private function usernameValidation() {
-            $username = $this->rw->getRegisterUsername();
-            $isValid = $this->db->validateUsername($username);
-            if (!$isValid) {
-                $username = $this->db->stripUsername($username);
-                $this->flashModel->setFlashMessage($this->rw->getUsernameInvalidCharacters());
-            }
+            $username = $this->rw->getUsernameForRegister();
             $this->usernameModel->setUsernameUsedInCredentials($username);
+            $isValid = $this->db->validateUsername($username);
         }
 
 }

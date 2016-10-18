@@ -3,6 +3,7 @@
 namespace view;
 
 require_once("GetFlashMessages.php");
+require_once("model/UserModel.php");
 require_once('LayoutView.php');
 
 class RegisterView {
@@ -16,11 +17,11 @@ class RegisterView {
 
 	public function __construct($usernameModel) {
 		$this->getFlashMessages = new GetFlashMessages();
-		$usernameModel->resetUsernameFromCredentials();
+		$this->usernameModel = $usernameModel;
+		$this->usernameModel->resetUsernameFromCredentials();
 	}
 
 	public function registerToLayoutView($flashModel, $sessionModel) {
-		// $rv = new LayoutView($sessionModel);
 		$this->layoutView = new LayoutView($sessionModel);
 		$this->flashModel = $flashModel;
 		$this->layoutView->toOutputBuffer($this->generateRegisterForm());
@@ -34,7 +35,7 @@ class RegisterView {
 				<legend>Register a new user - Write username and password</legend>
 				<p id="' . self::$messageId . '">' . $this->getMessage() . '</p>
 				<label for="' . self::$name . '">Username :</label>
-				<input type="text" size="20" name="' . self::$name . '" id="' . self::$name . '" value="' . $_SESSION['username'] . '">
+				<input type="text" size="20" name="' . self::$name . '" id="' . self::$name . '" value="' . $this->usernameModel->getUsernameUsedInCredentials() . '">
 				<br>
 				<label for="' . self::$password . '">Password  :</label>
 				<input type="password" size="20" name="' . self::$password . '" id="' . self::$password . '" value="">
@@ -48,52 +49,13 @@ class RegisterView {
 		</form>';
 	}
 
-	public function getMessage() {
-		return self::$message;
+	public function getMessage() : string {
+		return $this->flashModel->getFlashMessage();
 	}
 
-	private function cleanUpUsername($username) {
-		$cleanedUsername = strip_tags($username);
-		return $cleanedUsername;
-	}
-
-
-
-	public function checkRegisterUsername() {
-		// if (isset($_POST[self::$name])) {
-		// 	if (strlen($_POST[self::$name]) < 3) {
-		// 		self::$message .= $this->getFlashMessages->setUsernameInvalidCharacters();
-		// 		self::$message .= '<br>';
-		// 		$_SESSION['username'] = $_POST[self::$name];
-		// 		self::$successfull_registration = false;
-		// 	} else if (!$this->checkForInvalidCharacters()) {
-		// 		self::$message .= $this->getFlashMessages->setUsernameInvalidCharacters();
-		// 		self::$message .= '<br>';
-		// 		self::$successfull_registration = false;
-		// 	}
-		// }
-
+	public function getRegisterUsername() {
 		if (isset($_POST[self::$name])) {
 			return $_POST[self::$name];
-		}
-	}
-
-	public function checkRegisterPassword() {
-		if (isset($_POST[self::$password])) {
-			if (strlen($_POST[self::$password]) < 6) {
-				self::$message .= $this->getFlashMessages->setPasswordTooShortMessage();
-				self::$message .= '<br>';
-				self::$successfull_registration = false;
-			}
-		}
-	}
-
-	public function passwordsMatch() {
-		if (isset($_POST[self::$password]) && isset($_POST[self::$passwordRepeat])) {
-			if ($_POST[self::$password] !== $_POST[self::$passwordRepeat]) {
-				self::$message .= $this->getFlashMessages->setPasswordsNotMatchMessage();
-				self::$successfull_registration = false;
-			}
 		}
 	}
 
@@ -114,6 +76,12 @@ class RegisterView {
 		}
 	}
 
+	public function getPasswordMatchForRegister() {
+		if (isset($_POST[self::$passwordRepeat])) {
+			return $_POST[self::$passwordRepeat];
+		}
+	}
+
 	public function registerSuccessfull() {
 		return self::$successfull_registration;
 	}
@@ -126,6 +94,18 @@ class RegisterView {
 
 	public function getUsernameInvalidCharacters() : string {
 		return $this->getFlashMessages->setUsernameInvalidCharacters();
+	}
+
+	public function getUsernameTooShortMessage() : string {
+		return $this->getFlashMessages->setUsernameTooShortMessage();
+	}
+
+	public function getPasswordTooShortMessage() : string {
+		return $this->getFlashMessages->setPasswordTooShortMessage();
+	}
+
+	public function getPasswordsNotMatchMessage() : string {
+		return $this->getFlashMessages->setPasswordsNotMatchMessage();
 	}
 
 }
