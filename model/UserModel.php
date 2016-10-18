@@ -29,12 +29,12 @@ class UserModel {
     private function validateUsername() {
         preg_match('/^[a-zA-Z0-9]+$/', $this->username, $matches);
 
-        if (strlen($this->username) < 3) {
-            throw new \UsernameTooShortException('User entered a too short username');
-        }
-
         if (!(count($matches) > 0)) {
             throw new \InvalidSymbolsUsernameException('User entered username with invalid characters');
+        }
+
+        if (strlen($this->username) < 3) {
+            throw new \UsernameTooShortException('User entered a too short username');
         }
 
     }

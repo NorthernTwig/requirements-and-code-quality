@@ -35,7 +35,7 @@ class RegisterView {
 				<legend>Register a new user - Write username and password</legend>
 				<p id="' . self::$messageId . '">' . $this->getMessage() . '</p>
 				<label for="' . self::$name . '">Username :</label>
-				<input type="text" size="20" name="' . self::$name . '" id="' . self::$name . '" value="' . $this->usernameModel->getUsernameUsedInCredentials() . '">
+				<input type="text" size="20" name="' . self::$name . '" id="' . self::$name . '" value="' . strip_tags($this->getRegisterName()) . '">
 				<br>
 				<label for="' . self::$password . '">Password  :</label>
 				<input type="password" size="20" name="' . self::$password . '" id="' . self::$password . '" value="">
@@ -47,6 +47,10 @@ class RegisterView {
 				<br>
 			</fieldset>
 		</form>';
+	}
+
+	private function getRegisterName() {
+		return $this->usernameModel->getUsernameUsedInCredentials();
 	}
 
 	public function getMessage() : string {

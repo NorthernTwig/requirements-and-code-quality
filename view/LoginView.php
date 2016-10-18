@@ -47,7 +47,7 @@
 							<legend>Login - enter Username and password</legend>
 							<p id="' . self::$messageId . '">' . $this->flashModel->getFlashMessage() . '</p>
 							<label for="' . self::$name . '">Username :</label>
-							<input type="text" id="' . self::$name . '" name="' . self::$name . '" value="' . $this->usernameModel->getUsernameUsedInCredentials() . '" />
+							<input type="text" id="' . self::$name . '" name="' . self::$name . '" value="' . strip_tags($this->getName()) . '" />
 							<label for="' . self::$password . '">Password :</label>
 							<input type="password" id="' . self::$password . '" name="' . self::$password . '" />
 							<label for="' . self::$keep . '">Keep me logged in  :</label>
@@ -56,6 +56,10 @@
 							</fieldset>
 							</form>
 				';
+		}
+
+		private function getLoginName() {
+			return $this->usernameModel->getUsernameUsedInCredentials();
 		}
 
 		private function generateLogoutButtonHTML($message) {

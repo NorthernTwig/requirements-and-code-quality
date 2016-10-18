@@ -31,8 +31,6 @@ class RegisterController extends BaseController {
             }
 
         } catch (\InvalidSymbolsUsernameException $e) {
-            $cleanUsername = $user->stripUsername($username);
-            $this->usernameModel->setUsernameUsedInCredentials($cleanUsername);
             $this->flashModel->setFlashMessage($this->rw->getUsernameInvalidCharacters());
         } catch (\UsernameTooShortException $e) {
             $this->flashModel->setFlashMessage($this->rw->getUsernameTooShortMessage());
