@@ -13,7 +13,7 @@ class DAL {
     private static $DATABASE_LOCATION = './database/UserCredentials.json';
 
     public function __construct() {
-        $this->jsonString = file_get_contents($DATABASE_LOCATION);
+        $this->jsonString = file_get_contents(self::$DATABASE_LOCATION);
     }
 
     public function decodeJson() {
@@ -66,7 +66,7 @@ class DAL {
 
     public function saveDB($newJson) {
         $encodedJson = json_encode($newJson);
-        file_put_contents($DATABASE_LOCATION, $encodedJson);
+        file_put_contents(self::$DATABASE_LOCATION, $encodedJson);
     }
 
 }

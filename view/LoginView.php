@@ -38,7 +38,6 @@ class LoginView {
 		} else {
 			$this->lv->toOutputBuffer($this->generateLoginForm($this->flashMessage));
 		}
-
 	}
 
 	private function generateLoginForm($message) {
