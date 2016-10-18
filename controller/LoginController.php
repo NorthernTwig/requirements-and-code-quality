@@ -16,7 +16,6 @@
 
         public function __construct() {
             parent::__construct();
-            $this->flashModel->setFlashMessage('');
             $this->lv = new \view\LoginView($this->usernameModel);
 
             try {
@@ -29,6 +28,13 @@
                     $this->triesToLogoutUser();
                 }
 
+
+                if ($this->lv->isLoggingIn() || $this->lv->isLoggingOut()) {
+                    header('Location: /');
+                    exit();
+                }
+
+
             } catch (\NoUsernameException $e) {
                 $this->flashModel->setFlashMessage($this->lv->getWrongUsernameMessage());
             } catch (\NoPasswordException $e) {
@@ -40,10 +46,8 @@
             } finally {
                 $this->usernameModel->setUsernameUsedInCredentials(self::$username);
                 $this->lv->loginToLayoutView($this->flashModel, $this->sessionModel, $this->usernameModel);
-                if ($this->lv->isLoggingIn() || $this->lv->isLoggingOut()) {
-                    header('Location: /');
-                    exit();
-                }
+                $this->flashModel->setFlashMessage('');
+
             }
         }
 
@@ -79,7 +83,6 @@
             $this->usernameModel->removeStoredUsername();
             $this->sessionModel->setIsLoggedIn(false);
             $this->flashModel->setFlashMessage($this->lv->getLogoutMessage());
-            $this->flashModel->setFlashMessage($this->getFlashMessages->setLogoutMessage());
         }
 
         private function triesToAuthenticateUser() {
@@ -90,16 +93,16 @@
         }
 
         private function compareEnteredCredentials() {
-            if ($this->db->compareCredentials(self::$username, self::$password)) {
-                if ($this->lv->isKeepingLogin()) {
-                    $this->flashModel->setFlashMessage($this->lv->getWelcomeRemember());
-                } else if (!$this->sessionModel->getIsLoggedIn() && $this->lv->hasUsernameCookie()) {
-                    $this->flashModel->setFlashMessage($this->lv->getWelcomeCookie());
-                } else if (!$this->sessionModel->getIsLoggedIn()) {
-                    $this->flashModel->setFlashMessage($this->lv->getWelcomeStandard());
-                }
-                $this->sessionModel->setIsLoggedIn(true);
+            $this->db->compareCredentials(self::$username, self::$password);
+
+            if ($this->lv->isKeepingLogin()) {
+                $this->flashModel->setFlashMessage($this->lv->getWelcomeRemember());
+            } else if (!$this->sessionModel->getIsLoggedIn() && $this->lv->hasUsernameCookie()) {
+                $this->flashModel->setFlashMessage($this->lv->getWelcomeCookie());
+            } else if (!$this->sessionModel->getIsLoggedIn()) {
+                $this->flashModel->setFlashMessage($this->lv->getWelcomeStandard());
             }
+            $this->sessionModel->setIsLoggedIn(true);
         }
 
         private function setUsername() {

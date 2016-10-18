@@ -5,11 +5,13 @@ namespace model;
 require_once('exceptions/WrongCredentialsException.php');
 require_once('exceptions/InvalidSymbolsUsernameException.php');
 require_once('exceptions/UsernameTooShortException.php');
+require_once('exceptions/UserAlreadyExistException.php');
 require_once('exceptions/PasswordTooShortException.php');
 require_once('exceptions/PasswordsDoNotMatchException.php');
 
 class DAL {
-    private static $REGISTER_SUCCESS = false;
+    private static $USERNAME_SEARCH_STRING = 'username';
+    private static $PASSWORD_SEARCH_STRING = 'password';
 
 
     public function __construct() {
@@ -25,7 +27,7 @@ class DAL {
         $isCredentialsCorrect = false;
 
         for ($i = 0; $i < count($accounts); $i++) {
-          if ($accounts[$i]['username'] === $enteredUsername && $accounts[$i]['password'] === $enteredPassword) {
+          if ($accounts[$i][self::$USERNAME_SEARCH_STRING] === $enteredUsername && $accounts[$i][self::$PASSWORD_SEARCH_STRING] === $enteredPassword) {
             $isCredentialsCorrect = true;
           }
         }
@@ -38,53 +40,28 @@ class DAL {
 
       }
 
-    public function validatePassword(string $password, string $passwordMatch) {
-        if (strlen($password) < 6) {
-            throw new \PasswordTooShortException('User entered a password that was too short');
-        }
-
-        if ($password !== $passwordMatch) {
-            throw new \PasswordsDoNotMatchException('User entered two different passwords.');
-        }
-    }
-
-    public function validateUsername(string $username) {
-          preg_match('/^[a-zA-Z0-9]+$/', $username, $matches);
-
-          if (!(count($matches) > 0)) {
-              throw new \InvalidSymbolsUsernameException('User entered username with invalid characters');
-          }
-
-          if (strlen($username) < 3) {
-              throw new \UsernameTooShortException('User entered a too short username');
-          }
-
-    }
-
-    public function stripUsername(string $username) : string {
-        $cleanedUsername = strip_tags($username);
-        return $cleanedUsername;
-    }
-
-    public function compareUsername($enteredUsername) {
+    public function compareUsernameWithDatabase($enteredUsername) {
         $accounts = $this->decodeJson();
         $usernameExists = false;
 
         for ($i = 0; $i < count($accounts); $i++) {
-          if ($accounts[$i]['username'] === $enteredUsername) {
+          if ($accounts[$i][self::$USERNAME_SEARCH_STRING] === $enteredUsername) {
             $usernameExists = true;
           }
         }
-        return $usernameExists;
+
+        if ($usernameExists) {
+            throw new \UserAlreadyExistException('User tried to create existing user');
+        }
+
       }
 
-    public function addUserToDB($enteredUsername, $enteredPassword) {
+    public function addUserToDB($user) {
         $json = $this->decodeJson();
         $newCredArray = array();
-        $newCredArray['username'] = $enteredUsername;
-        $newCredArray['password'] = $enteredPassword;
+        $newCredArray = $user;
         array_push($json, $newCredArray);
-        if ($enteredUsername !== NULL || $enteredPassword !== NULL) {
+        if ($user !== NULL ) {
           $this->saveDB($json);
         }
       }
@@ -92,13 +69,6 @@ class DAL {
     public function saveDB($newJson) {
         $encodedJson = json_encode($newJson);
         file_put_contents('./database/UserCredentials.json', $encodedJson);
-        self::$REGISTER_SUCCESS = true;
       }
-
-    public function wasSuccessfull() {
-          return self::$REGISTER_SUCCESS;
-      }
-
-
 
 }

@@ -108,4 +108,8 @@ class RegisterView {
 		return $this->getFlashMessages->setPasswordsNotMatchMessage();
 	}
 
+	public function getUserAlreadyExistsMessage() : string {
+		return $this->getFlashMessages->setUserAlreadyExistsMessage();
+	}
+
 }
