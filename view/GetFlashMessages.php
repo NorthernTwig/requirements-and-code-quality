@@ -57,7 +57,10 @@ class GetFlashMessages {
     }
 
     public function setNoEnteredCredentials() : string {
-        return $this->setUsernameTooShortMessage() . ' <br> ' . $this->setPasswordTooShortMessage();
+        $combinedString = $this->setUsernameTooShortMessage();
+        $combinedString .= '<br>';
+        $combinedString .= $this->setPasswordTooShortMessage();
+        return $combinedString;
     }
 
 }

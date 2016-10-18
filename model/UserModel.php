@@ -4,6 +4,7 @@ namespace model;
 
 require_once('exceptions/InvalidSymbolsUsernameException.php');
 require_once('exceptions/UsernameTooShortException.php');
+require_once('exceptions/NoEnteredCredentialsException.php');
 require_once('exceptions/PasswordTooShortException.php');
 require_once('exceptions/PasswordsDoNotMatchException.php');
 
@@ -18,8 +19,10 @@ class UserModel {
     }
 
     private function validateCredentialsExist() {
-        if (strlen($this->username) < 0 && strlen($this->password) < 0) {
-            throw new \NoEnteredCredentials('User did not enter any login information');
+        if ($this->username === '' || ctype_space($this->username)) {
+            if ($this->password === '' || ctype_space($this->password)) {
+                throw new \NoEnteredCredentials('User did not enter any login information');
+            }
         }
     }
 
