@@ -43,7 +43,9 @@ class RegisterController extends BaseController {
             $this->flashModel->setFlashMessage($this->rw->getPasswordsNotMatchMessage());
         } catch (\UserAlreadyExistException $e) {
             $this->flashModel->setFlashMessage($this->rw->getUserAlreadyExistsMessage());
-        } catch (\Exception $e) {
+        } catch (\NoEnteredCredentials $e) {
+            $this->flashModel->setFlashMessage($this->rw->getNoEnteredCredentials());
+        }  catch (\Exception $e) {
             var_dump($e->getMessage());
         } finally {
             $this->rw->registerToLayoutView($this->flashModel, $this->sessionModel);

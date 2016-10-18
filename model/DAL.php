@@ -3,11 +3,8 @@
 namespace model;
 
 require_once('exceptions/WrongCredentialsException.php');
-require_once('exceptions/InvalidSymbolsUsernameException.php');
-require_once('exceptions/UsernameTooShortException.php');
 require_once('exceptions/UserAlreadyExistException.php');
-require_once('exceptions/PasswordTooShortException.php');
-require_once('exceptions/PasswordsDoNotMatchException.php');
+
 
 class DAL {
     private static $USERNAME_SEARCH_STRING = 'username';

@@ -112,4 +112,8 @@ class RegisterView {
 		return $this->getFlashMessages->setUserAlreadyExistsMessage();
 	}
 
+	public function getNoEnteredCredentials() : string {
+		return $this->getFlashMessages->setNoEnteredCredentials();
+	}
+
 }

@@ -56,4 +56,8 @@ class GetFlashMessages {
         return 'Username contains invalid characters.';
     }
 
+    public function setNoEnteredCredentials() : string {
+        return $this->setUsernameTooShortMessage() . ' <br> ' . $this->setPasswordTooShortMessage();
+    }
+
 }
