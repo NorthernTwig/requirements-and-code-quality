@@ -20,6 +20,7 @@ class RegisterController extends BaseController {
 
             if ($this->rw->isRegistering()) {
                 $username = $this->rw->getUsernameForRegister();
+                $this->usernameModel->setUsernameUsedInCredentials($username);
                 $password = $this->rw->getPasswordForRegister();
                 $passwordMatch = $this->rw->getPasswordMatchForRegister();
                 $user = new \model\UserModel($username, $password, $passwordMatch);
