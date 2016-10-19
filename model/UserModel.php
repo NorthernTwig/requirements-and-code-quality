@@ -7,6 +7,7 @@ require_once('exceptions/UsernameTooShortException.php');
 require_once('exceptions/NoEnteredCredentialsException.php');
 require_once('exceptions/PasswordTooShortException.php');
 require_once('exceptions/PasswordsDoNotMatchException.php');
+require_once('model/User.php');
 
 class UserModel {
 
@@ -24,7 +25,7 @@ class UserModel {
     }
 
     public function newUser() {
-        return ['username' => $this->username, 'password' => $this->password];
+        return new User($this->username, $this->password);
     }
 
     private function validateCredentialsExist() {
@@ -45,7 +46,6 @@ class UserModel {
         if (strlen($this->username) < 3) {
             throw new \UsernameTooShortException('User entered a too short username');
         }
-
     }
 
     private function validatePassword() {

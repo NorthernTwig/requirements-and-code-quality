@@ -16,6 +16,7 @@ class LoginController extends BaseController {
     private static $password = '';
 
     private $layoutView;
+    private $user;
 
     public function __construct() {
         parent::__construct();

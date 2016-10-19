@@ -13,7 +13,7 @@ class RoutingController {
         $this->isRegisterView = isset($_GET['register']);
         $this->route();
     }
-
+    
     private function route() {
         switch ($this->isRegisterView) {
             case false:

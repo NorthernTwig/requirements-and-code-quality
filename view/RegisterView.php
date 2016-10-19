@@ -53,7 +53,7 @@ class RegisterView {
 			</form>
 		';
 	}
-
+	
 	public function redirectToLogin() {
 		$this->layoutView->redirect();
 	}

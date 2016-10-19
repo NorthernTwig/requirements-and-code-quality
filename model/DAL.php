@@ -55,10 +55,11 @@ class DAL {
         }
     }
 
-    public function addUserToDB($user) {
+    public function addUserToDB(\model\User $user) {
         $json = $this->decodeJson();
         $newCredArray = array();
         $newCredArray = $user;
+
         array_push($json, $newCredArray);
 
         if ($user !== NULL ) {
