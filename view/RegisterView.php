@@ -50,7 +50,7 @@ class RegisterView {
 	}
 
 	public function redirectToLogin() {
-		$this->lv->redirect();
+		$this->layoutView->redirect();
 	}
 
 	private function getRegisterName() {
