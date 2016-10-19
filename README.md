@@ -4,6 +4,14 @@ A login module - created for a course called 'Introduction to software quality'.
 ### What is implemented?
 This module currently contains basic registration and a simple login. 
 
+### What is not implemented?
+Extremely insecure - should not be used in production.
+
+* The passwords are not hashed.
+* Cookie manipulation login is possible.
+* Session hijacking is possible.
+* Username and Password are stored in cookies.
+
 ### Requirements
 * Php ^7.0.*
 
