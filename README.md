@@ -32,3 +32,5 @@ An example of a test:
 
 ![test example](/example-test.png)
 
+### Live Application
+A live version of the module can be found here: [Live](http://final.dwow.se/).
