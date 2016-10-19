@@ -13,5 +13,5 @@ The module can be tested here:
 
 An example of a test:
 
-![test example](/text-example.png)
+![test example](/example-text.png)
 
