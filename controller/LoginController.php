@@ -17,7 +17,7 @@ class LoginController extends BaseController {
 
     public function __construct() {
         parent::__construct();
-        $this->lv = new \view\LoginView($this->usernameModel, $this->sessionModel);
+        $this->layoutView = new \view\LoginView($this->usernameModel, $this->sessionModel);
 
         try {
 
@@ -29,21 +29,19 @@ class LoginController extends BaseController {
                 $this->triesToLogoutUser();
             }
 
-            if ($this->lv->isLoggingIn() || $this->lv->isLoggingOut()) {
-                $this->lv->reloadLogin();
+            if ($this->layoutView->isLoggingIn() || $this->layoutView->isLoggingOut()) {
+                $this->layoutView->reloadLogin();
             }
 
         } catch (\NoUsernameException $e) {
-            $this->flashModel->setFlashMessage($this->lv->getWrongUsernameMessage());
+            $this->flashModel->setFlashMessage($this->layoutView->getWrongUsernameMessage());
         } catch (\NoPasswordException $e) {
-            $this->flashModel->setFlashMessage($this->lv->getWrongPasswordMessage());
+            $this->flashModel->setFlashMessage($this->layoutView->getWrongPasswordMessage());
         } catch (\WrongCredentialsException $e) {
-            $this->flashModel->setFlashMessage($this->lv->getWrongCredentials());
-        } catch (\Exception $e) {
-            $this->flashModel->setFlashMessage($e->getMessage());
+            $this->flashModel->setFlashMessage($this->layoutView->getWrongCredentials());
         } finally {
             $this->checkIfStoreUsername();
-            $this->lv->loginToLayoutView($this->flashModel, $this->usernameModel);
+            $this->layoutView->loginToLayoutView($this->flashModel, $this->usernameModel);
             $this->flashModel->setFlashMessage('');
         }
     }
@@ -55,27 +53,27 @@ class LoginController extends BaseController {
     }
 
     private function hasCookiesTryingToLogin() : bool {
-        if ($this->lv->hasUsernameCookie() && !$this->lv->isLoggingOut()) {
+        if ($this->layoutView->hasUsernameCookie() && !$this->layoutView->isLoggingOut()) {
             return true;
         }
         return false;
     }
 
     private function triesToLoginUserWithCookies() {
-        self::$username = $this->lv->getUsernameCookie();
-        self::$password = $this->lv->getPasswordCookie();
+        self::$username = $this->layoutView->getUsernameCookie();
+        self::$password = $this->layoutView->getPasswordCookie();
         $this->compareEnteredCredentials();
     }
 
     private function isTryingToLogIn() : bool {
-        if ($this->lv->isLoggingIn() && !$this->sessionModel->getIsLoggedIn()) {
+        if ($this->layoutView->isLoggingIn() && !$this->sessionModel->getIsLoggedIn()) {
             return true;
         }
         return false;
     }
 
     private function isTryingToLogOut() : bool {
-        if ($this->lv->isLoggingOut() && $this->sessionModel->getIsLoggedIn()) {
+        if ($this->layoutView->isLoggingOut() && $this->sessionModel->getIsLoggedIn()) {
             return true;
         }
         return false;
@@ -85,7 +83,7 @@ class LoginController extends BaseController {
         $this->removeUserCredentialsInCookie();
         $this->usernameModel->removeStoredUsername();
         $this->sessionModel->setIsLoggedIn(false);
-        $this->flashModel->setFlashMessage($this->lv->getLogoutMessage());
+        $this->flashModel->setFlashMessage($this->layoutView->getLogoutMessage());
     }
 
     private function triesToAuthenticateUser() {
@@ -96,43 +94,44 @@ class LoginController extends BaseController {
     }
 
     private function compareEnteredCredentials() {
-        $this->db->compareCredentials(self::$username, self::$password);
+        $this->dal->compareCredentials(self::$username, self::$password);
 
-        if ($this->lv->isKeepingLogin()) {
-            $this->flashModel->setFlashMessage($this->lv->getWelcomeRemember());
-        } else if (!$this->sessionModel->getIsLoggedIn() && $this->lv->hasUsernameCookie()) {
-            $this->flashModel->setFlashMessage($this->lv->getWelcomeCookie());
+        if ($this->layoutView->isKeepingLogin()) {
+            $this->flashModel->setFlashMessage($this->layoutView->getWelcomeRemember());
+        } else if (!$this->sessionModel->getIsLoggedIn() && $this->layoutView->hasUsernameCookie()) {
+            $this->flashModel->setFlashMessage($this->layoutView->getWelcomeCookie());
         } else if (!$this->sessionModel->getIsLoggedIn()) {
-            $this->flashModel->setFlashMessage($this->lv->getWelcomeStandard());
+            $this->flashModel->setFlashMessage($this->layoutView->getWelcomeStandard());
         }
+
         $this->sessionModel->setIsLoggedIn(true);
     }
 
     private function setUsername() {
-        if ($this->lv->hasUsernameCookie()) {
-            self::$username = $this->lv->getUsernameCookie();
+        if ($this->layoutView->hasUsernameCookie()) {
+            self::$username = $this->layoutView->getUsernameCookie();
         } else {
-            self::$username = $this->lv->getUsername();
+            self::$username = $this->layoutView->getUsername();
         }
     }
 
     private function setPassword() {
-        if ($this->lv->hasPasswordCookie()) {
-            self::$password = $this->lv->getPasswordCookie();
+        if ($this->layoutView->hasPasswordCookie()) {
+            self::$password = $this->layoutView->getPasswordCookie();
         } else {
-            self::$password = $this->lv->getPassword();
+            self::$password = $this->layoutView->getPassword();
         }
     }
 
     public function storeUserCredentialsInCookie() {
-        if ($this->lv->isKeepingLogin()) {
-            $this->lv->setUsernameCookie();
-            $this->lv->setPasswordCookie();
+        if ($this->layoutView->isKeepingLogin()) {
+            $this->layoutView->setUsernameCookie();
+            $this->layoutView->setPasswordCookie();
         }
     }
 
     public function removeUserCredentialsInCookie() {
-        $this->lv->removeUsernameCookie();
-        $this->lv->removePasswordCookie();
+        $this->layoutView->removeUsernameCookie();
+        $this->layoutView->removePasswordCookie();
     }
 }

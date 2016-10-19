@@ -22,7 +22,7 @@ class LoginView {
 	private static $COOKIE_PASSWORD_STRING = 'Password';
 
 	public function __construct($usernameModel, $sessionModel) {
-		$this->lv = new LayoutView($sessionModel, false);
+		$this->layoutView = new LayoutView($sessionModel, false);
 		$this->sessionModel = $sessionModel;
 		$this->getFlashMessages = new \view\GetFlashMessages();
 		$usernameModel->resetUsernameFromCredentials();
@@ -34,9 +34,9 @@ class LoginView {
 		$this->flashMessage = $this->flashModel->getFlashMessage();
 
 		if ($this->sessionModel->getIsLoggedIn()) {
-			$this->lv->toOutputBuffer($this->generateLogoutButtonHTML($this->flashMessage));
+			$this->layoutView->toOutputBuffer($this->generateLogoutButtonHTML($this->flashMessage));
 		} else {
-			$this->lv->toOutputBuffer($this->generateLoginForm($this->flashMessage));
+			$this->layoutView->toOutputBuffer($this->generateLoginForm($this->flashMessage));
 		}
 	}
 
@@ -59,7 +59,7 @@ class LoginView {
 	}
 
 	public function reloadLogin() {
-		$this->lv->redirect();
+		$this->layoutView->redirect();
 	}
 
 	private function getLoginName() {

@@ -13,41 +13,39 @@ class RegisterController extends BaseController {
 
     public function __construct() {
         parent::__construct();
-        $this->rw = new \view\RegisterView($this->usernameModel, $this->sessionModel);
+        $this->registerView = new \view\RegisterView($this->usernameModel, $this->sessionModel);
         $this->flashModel->resetMessageFromCredentials();
 
         try {
 
-            if ($this->rw->isRegistering()) {
-                $username = $this->rw->getUsernameForRegister();
+            if ($this->registerView->isRegistering()) {
+                $username = $this->registerView->getUsernameForRegister();
                 $this->usernameModel->setUsernameUsedInCredentials($username);
-                $password = $this->rw->getPasswordForRegister();
-                $passwordMatch = $this->rw->getPasswordMatchForRegister();
+                $password = $this->registerView->getPasswordForRegister();
+                $passwordMatch = $this->registerView->getPasswordMatchForRegister();
                 $user = new \model\UserModel($username, $password, $passwordMatch);
-                $this->db->compareUsernameWithDatabase($username);
-                $this->db->addUserToDB($user);
-                $this->flashModel->setFlashMessage($this->rw->getNewRegisterMessage());
-                $this->rw->redirectToLogin();
+                $this->dal->compareUsernameWithDatabase($username);
+                $this->dal->addUserToDB($user);
+                $this->flashModel->setFlashMessage($this->registerView->getNewRegisterMessage());
+                $this->registerView->redirectToLogin();
             }
 
         } catch (\InvalidSymbolsUsernameException $e) {
-            $this->flashModel->setFlashMessage($this->rw->getUsernameInvalidCharacters());
+            $this->flashModel->setFlashMessage($this->registerView->getUsernameInvalidCharacters());
         } catch (\UsernameTooShortException $e) {
-            $this->flashModel->setFlashMessage($this->rw->getUsernameTooShortMessage());
+            $this->flashModel->setFlashMessage($this->registerView->getUsernameTooShortMessage());
         } catch (\UsernameTooShortException $e) {
-            $this->flashModel->setFlashMessage($this->rw->getUsernameTooShortMessage());
+            $this->flashModel->setFlashMessage($this->registerView->getUsernameTooShortMessage());
         } catch (\PasswordTooShortException $e) {
-           $this->flashModel->setFlashMessage($this->rw->getPasswordTooShortMessage());
+           $this->flashModel->setFlashMessage($this->registerView->getPasswordTooShortMessage());
         } catch (\PasswordsDoNotMatchException $e) {
-            $this->flashModel->setFlashMessage($this->rw->getPasswordsNotMatchMessage());
+            $this->flashModel->setFlashMessage($this->registerView->getPasswordsNotMatchMessage());
         } catch (\UserAlreadyExistException $e) {
-            $this->flashModel->setFlashMessage($this->rw->getUserAlreadyExistsMessage());
+            $this->flashModel->setFlashMessage($this->registerView->getUserAlreadyExistsMessage());
         } catch (\NoEnteredCredentials $e) {
-            $this->flashModel->setFlashMessage($this->rw->getNoEnteredCredentials());
-        }  catch (\Exception $e) {
-            var_dump($e->getMessage());
+            $this->flashModel->setFlashMessage($this->registerView->getNoEnteredCredentials());
         } finally {
-            $this->rw->registerToLayoutView($this->flashModel, $this->sessionModel);
+            $this->registerView->registerToLayoutView($this->flashModel, $this->sessionModel);
         }
     }
 }

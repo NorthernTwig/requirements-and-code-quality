@@ -12,6 +12,6 @@ class BaseController {
         $this->sessionModel = new \model\SessionModel();
         $this->flashModel = new \model\FlashModel();
         $this->usernameModel = new \model\UsernameModel();
-        $this->db = new \model\DAL();
+        $this->dal = new \model\DAL();
     }
 }
