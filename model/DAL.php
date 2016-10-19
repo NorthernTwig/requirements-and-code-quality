@@ -12,12 +12,14 @@ class DAL {
     private static $PASSWORD_SEARCH_STRING = 'password';
     private static $DATABASE_LOCATION = './database/UserCredentials.json';
 
+    private $dbJsonFormat;
+
     public function __construct() {
-        $this->jsonString = file_get_contents(self::$DATABASE_LOCATION);
+        $this->dbJsonFormat = file_get_contents(self::$DATABASE_LOCATION);
     }
 
     public function decodeJson() {
-        return json_decode($this->jsonString, true);
+        return json_decode($this->dbJsonFormat, true);
     }
 
     public function compareCredentials($enteredUsername, $enteredPassword) {

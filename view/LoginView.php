@@ -21,6 +21,12 @@ class LoginView {
 	private static $COOKIE_NAME_STRING = 'Username';
 	private static $COOKIE_PASSWORD_STRING = 'Password';
 
+	private $layoutView;
+	private $sessionModel;
+	private $getFlashMessages;
+	private $usernameModel;
+	private $flashMessage;
+
 	public function __construct($usernameModel, $sessionModel) {
 		$this->layoutView = new LayoutView($sessionModel, false);
 		$this->sessionModel = $sessionModel;

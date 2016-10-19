@@ -10,6 +10,10 @@ require_once('exceptions/PasswordsDoNotMatchException.php');
 
 class UserModel {
 
+    private $username;
+    private $password;
+    private $passwordMatch;
+
     public function __construct(string $username, string $password, string $passwordMatch) {
         $this->username = $username;
         $this->password = $password;

@@ -15,6 +15,11 @@ class RegisterView {
 	private static $register = 'RegisterView::Register';
 	private static $message = '';
 
+	private $layoutView;
+	private $sessionModel;
+	private $getFlashMessages;
+	private $usernameModel;
+
 	public function __construct($usernameModel, $sessionModel) {
 		$this->layoutView = new LayoutView($sessionModel, true);
 		$this->getFlashMessages = new GetFlashMessages();

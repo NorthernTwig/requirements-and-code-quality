@@ -7,6 +7,8 @@ require_once("RegisterController.php");
 
 class RoutingController {
 
+    private $isRegisterView;
+
     public function __construct() {
         $this->isRegisterView = isset($_GET['register']);
         $this->route();

@@ -15,6 +15,12 @@ class LoginController extends BaseController {
     private static $username = '';
     private static $password = '';
 
+    private $layoutView;
+    private $dal;
+    private $usernameModel;
+    private $sessionModel;
+    private $flashmodel;
+
     public function __construct() {
         parent::__construct();
         $this->layoutView = new \view\LoginView($this->usernameModel, $this->sessionModel);

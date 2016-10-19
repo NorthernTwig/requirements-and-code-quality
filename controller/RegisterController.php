@@ -11,6 +11,12 @@ require_once('model/UserModel.php');
 
 class RegisterController extends BaseController {
 
+    private $registerView;
+    private $flashmodel;
+    private $sessionModel;
+    private $usernameModel;
+    private $dal;
+
     public function __construct() {
         parent::__construct();
         $this->registerView = new \view\RegisterView($this->usernameModel, $this->sessionModel);

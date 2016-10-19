@@ -6,6 +6,10 @@ require_once('DateTimeView.php');
 
 class LayoutView {
 
+    private $date;
+    private $isRegisterView;
+    private $sessionModel;
+
     public function __construct($sessionModel, $isRegisterView) {
         $this->date = new DateTimeView();
         $this->isRegisterView = $isRegisterView;
