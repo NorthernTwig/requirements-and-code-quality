@@ -15,13 +15,13 @@ class RegisterView {
 	private static $register = 'RegisterView::Register';
 	private static $message = '';
 
-	public function __construct($usernameModel) {
+	public function __construct($usernameModel, $sessionModel) {
+		$this->layoutView = new LayoutView($sessionModel, true);
 		$this->getFlashMessages = new GetFlashMessages();
 		$this->usernameModel = $usernameModel;
 	}
 
-	public function registerToLayoutView($flashModel, $sessionModel) {
-		$this->layoutView = new LayoutView($sessionModel, true);
+	public function registerToLayoutView($flashModel) {
 		$this->flashModel = $flashModel;
 		$this->layoutView->toOutputBuffer($this->generateRegisterForm());
 	}
@@ -47,6 +47,10 @@ class RegisterView {
 				</fieldset>
 			</form>
 		';
+	}
+
+	public function redirectToLogin() {
+		$this->lv->redirect();
 	}
 
 	private function getRegisterName() {

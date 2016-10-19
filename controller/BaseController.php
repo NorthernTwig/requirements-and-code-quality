@@ -14,5 +14,4 @@ class BaseController {
         $this->usernameModel = new \model\UsernameModel();
         $this->db = new \model\DAL();
     }
-
 }

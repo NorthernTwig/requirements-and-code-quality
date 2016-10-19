@@ -32,6 +32,11 @@ class LayoutView {
         ';
     }
 
+    public function redirect() {
+        header('Location: /');
+        exit();
+    }
+
     private function getDate() {
         return $this->date->show();
     }

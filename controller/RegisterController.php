@@ -13,7 +13,7 @@ class RegisterController extends BaseController {
 
     public function __construct() {
         parent::__construct();
-        $this->rw = new \view\RegisterView($this->usernameModel);
+        $this->rw = new \view\RegisterView($this->usernameModel, $this->sessionModel);
         $this->flashModel->resetMessageFromCredentials();
 
         try {
@@ -27,8 +27,7 @@ class RegisterController extends BaseController {
                 $this->db->compareUsernameWithDatabase($username);
                 $this->db->addUserToDB($user);
                 $this->flashModel->setFlashMessage($this->rw->getNewRegisterMessage());
-                header('Location: /');
-                exit();
+                $this->rw->redirectToLogin();
             }
 
         } catch (\InvalidSymbolsUsernameException $e) {

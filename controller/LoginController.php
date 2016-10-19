@@ -17,7 +17,7 @@ class LoginController extends BaseController {
 
     public function __construct() {
         parent::__construct();
-        $this->lv = new \view\LoginView($this->usernameModel);
+        $this->lv = new \view\LoginView($this->usernameModel, $this->sessionModel);
 
         try {
 
@@ -30,8 +30,7 @@ class LoginController extends BaseController {
             }
 
             if ($this->lv->isLoggingIn() || $this->lv->isLoggingOut()) {
-                header('Location: /');
-                exit();
+                $this->lv->reloadLogin();
             }
 
         } catch (\NoUsernameException $e) {
@@ -44,7 +43,7 @@ class LoginController extends BaseController {
             $this->flashModel->setFlashMessage($e->getMessage());
         } finally {
             $this->checkIfStoreUsername();
-            $this->lv->loginToLayoutView($this->flashModel, $this->sessionModel, $this->usernameModel);
+            $this->lv->loginToLayoutView($this->flashModel, $this->usernameModel);
             $this->flashModel->setFlashMessage('');
         }
     }

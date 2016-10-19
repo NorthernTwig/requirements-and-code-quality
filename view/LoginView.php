@@ -21,14 +21,14 @@ class LoginView {
 	private static $COOKIE_NAME_STRING = 'Username';
 	private static $COOKIE_PASSWORD_STRING = 'Password';
 
-	public function __construct($usernameModel) {
+	public function __construct($usernameModel, $sessionModel) {
+		$this->lv = new LayoutView($sessionModel, false);
+		$this->sessionModel = $sessionModel;
 		$this->getFlashMessages = new \view\GetFlashMessages();
 		$usernameModel->resetUsernameFromCredentials();
 	}
 
-	public function loginToLayoutView($flashModel, $sessionModel, $usernameModel) {
-		$this->sessionModel = $sessionModel;
-		$this->lv = new LayoutView($this->sessionModel, false);
+	public function loginToLayoutView($flashModel, $usernameModel) {
 		$this->usernameModel = $usernameModel;
 		$this->flashModel = $flashModel;
 		$this->flashMessage = $this->flashModel->getFlashMessage();
@@ -56,6 +56,10 @@ class LoginView {
 				</fieldset>
 			</form>
 		';
+	}
+
+	public function reloadLogin() {
+		$this->lv->redirect();
 	}
 
 	private function getLoginName() {
