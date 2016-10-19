@@ -53,7 +53,7 @@ class RegisterView {
 			</form>
 		';
 	}
-	
+
 	public function redirectToLogin() {
 		$this->layoutView->redirect();
 	}
@@ -99,9 +99,7 @@ class RegisterView {
 	}
 
 	public function isRegistering() {
-		if (isset($_POST[self::$register])) {
-			return true;
-		}
+		return isset($_POST[self::$register]);
 	}
 
 	public function getUsernameInvalidCharacters() : string {
