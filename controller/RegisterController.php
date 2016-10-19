@@ -12,6 +12,10 @@ require_once('model/UserModel.php');
 class RegisterController extends BaseController {
 
     private $registerView;
+    private $username;
+    private $password;
+    private $user;
+    private $passwordMatch;
 
     public function __construct() {
         parent::__construct();
@@ -20,17 +24,7 @@ class RegisterController extends BaseController {
 
         try {
 
-            if ($this->registerView->isRegistering()) {
-                $username = $this->registerView->getUsernameForRegister();
-                $this->usernameModel->setUsernameUsedInCredentials($username);
-                $password = $this->registerView->getPasswordForRegister();
-                $passwordMatch = $this->registerView->getPasswordMatchForRegister();
-                $user = new \model\UserModel($username, $password, $passwordMatch);
-                $this->dal->compareUsernameWithDatabase($username);
-                $this->dal->addUserToDB($user->newUser());
-                $this->flashModel->setFlashMessage($this->registerView->getNewRegisterMessage());
-                $this->registerView->redirectToLogin();
-            }
+            $this->triesRegisterWithCredentials();
 
         } catch (\InvalidSymbolsUsernameException $e) {
             $this->flashModel->setFlashMessage($this->registerView->getUsernameInvalidCharacters());
@@ -49,5 +43,35 @@ class RegisterController extends BaseController {
         } finally {
             $this->registerView->registerToLayoutView($this->flashModel, $this->sessionModel);
         }
+    }
+
+    private function triesRegisterWithCredentials() {
+        if ($this->registerView->isRegistering()) {
+            $this->obtainAndSetRegisterUsername();
+            $this->obtainAndSetRegisterPassword();
+            $this->tryCreateUser();
+            $this->setFlashMessageAndRedirect();
+        }
+    }
+
+    private function obtainAndSetRegisterUsername() {
+        $this->username = $this->registerView->getUsernameForRegister();
+        $this->usernameModel->setUsernameUsedInCredentials($this->username);
+    }
+
+    private function obtainAndSetRegisterPassword() {
+        $this->password = $this->registerView->getPasswordForRegister();
+        $this->passwordMatch = $this->registerView->getPasswordMatchForRegister();
+    }
+
+    private function tryCreateUser() {
+        $this->user = new \model\UserModel($this->username, $this->password, $this->passwordMatch);
+        $this->dal->compareUsernameWithDatabase($this->username);
+        $this->dal->addUserToDB($this->user->newUser());
+    }
+
+    private function setFlashMessageAndRedirect() {
+        $this->flashModel->setFlashMessage($this->registerView->getNewRegisterMessage());
+        $this->registerView->redirectToLogin();
     }
 }
