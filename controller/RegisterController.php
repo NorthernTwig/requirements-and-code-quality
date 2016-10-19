@@ -27,7 +27,7 @@ class RegisterController extends BaseController {
                 $passwordMatch = $this->registerView->getPasswordMatchForRegister();
                 $user = new \model\UserModel($username, $password, $passwordMatch);
                 $this->dal->compareUsernameWithDatabase($username);
-                $this->dal->addUserToDB($user);
+                $this->dal->addUserToDB($user->newUser());
                 $this->flashModel->setFlashMessage($this->registerView->getNewRegisterMessage());
                 $this->registerView->redirectToLogin();
             }

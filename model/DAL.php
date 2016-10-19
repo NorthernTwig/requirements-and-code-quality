@@ -26,6 +26,7 @@ class DAL {
         $accounts = $this->decodeJson();
         $isCredentialsCorrect = false;
 
+
         for ($i = 0; $i < count($accounts); $i++) {
             if ($accounts[$i][self::$USERNAME_SEARCH_STRING] === $enteredUsername && $accounts[$i][self::$PASSWORD_SEARCH_STRING] === $enteredPassword) {
                 $isCredentialsCorrect = true;
@@ -58,7 +59,6 @@ class DAL {
         $json = $this->decodeJson();
         $newCredArray = array();
         $newCredArray = $user;
-
         array_push($json, $newCredArray);
 
         if ($user !== NULL ) {

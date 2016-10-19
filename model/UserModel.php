@@ -23,6 +23,10 @@ class UserModel {
         $this->validatePassword();
     }
 
+    public function newUser() {
+        return ['username' => $this->username, 'password' => $this->password];
+    }
+
     private function validateCredentialsExist() {
         if ($this->username === '' || ctype_space($this->username)) {
             if ($this->password === '' || ctype_space($this->password)) {
