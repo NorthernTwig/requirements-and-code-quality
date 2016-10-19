@@ -12,9 +12,10 @@ require_once('BaseController.php');
 
 class LoginController extends BaseController {
 
-    private static $username = '';
-    private static $password = '';
-
+    // private static $username = '';
+    // private static $password = '';
+    private $username;
+    private $password;
     private $layoutView;
     private $user;
 
@@ -57,8 +58,8 @@ class LoginController extends BaseController {
     }
 
     private function checkIfStoreUsername() {
-        if (strlen(self::$username) > 0) {
-            $this->usernameModel->setUsernameUsedInCredentials(self::$username);
+        if (strlen($this->username) > 0) {
+            $this->usernameModel->setUsernameUsedInCredentials($this->username);
         }
     }
 
@@ -67,8 +68,8 @@ class LoginController extends BaseController {
     }
 
     private function triesToLoginUserWithCookies() {
-        self::$username = $this->layoutView->getUsernameCookie();
-        self::$password = $this->layoutView->getPasswordCookie();
+        $this->username = $this->layoutView->getUsernameCookie();
+        $this->password = $this->layoutView->getPasswordCookie();
         $this->compareEnteredCredentials();
     }
 
@@ -95,7 +96,7 @@ class LoginController extends BaseController {
     }
 
     private function compareEnteredCredentials() {
-        $this->dal->compareCredentials(self::$username, self::$password);
+        $this->dal->compareCredentials($this->username, $this->password);
 
         if ($this->layoutView->isKeepingLogin()) {
             $this->flashModel->setFlashMessage($this->layoutView->getWelcomeRemember());
@@ -110,17 +111,17 @@ class LoginController extends BaseController {
 
     private function setUsername() {
         if ($this->layoutView->hasUsernameCookie()) {
-            self::$username = $this->layoutView->getUsernameCookie();
+            $this->username = $this->layoutView->getUsernameCookie();
         } else {
-            self::$username = $this->layoutView->getUsername();
+            $this->username = $this->layoutView->getUsername();
         }
     }
 
     private function setPassword() {
         if ($this->layoutView->hasPasswordCookie()) {
-            self::$password = $this->layoutView->getPasswordCookie();
+            $this->password = $this->layoutView->getPasswordCookie();
         } else {
-            self::$password = $this->layoutView->getPassword();
+            $this->password = $this->layoutView->getPassword();
         }
     }
 
