@@ -24,17 +24,8 @@ class LoginController extends BaseController {
 
         try {
 
-            if ($this->hasCookiesTryingToLogin()) {
-                $this->triesToLoginUserWithCookies();
-            } else if ($this->isTryingToLogIn()) {
-                $this->triesToAuthenticateUser();
-            } else if ($this->isTryingToLogOut()) {
-                $this->triesToLogoutUser();
-            }
-
-            if ($this->layoutView->isLoggingIn() || $this->layoutView->isLoggingOut()) {
-                $this->layoutView->reloadLogin();
-            }
+            $this->ifLoginTryToAuthenticate();
+            $this->ifTriesLoginOrOutRedirect();
 
         } catch (\NoUsernameException $e) {
             $this->flashModel->setFlashMessage($this->layoutView->getWrongUsernameMessage());
@@ -46,6 +37,22 @@ class LoginController extends BaseController {
             $this->checkIfStoreUsername();
             $this->layoutView->loginToLayoutView($this->flashModel, $this->usernameModel);
             $this->flashModel->setFlashMessage('');
+        }
+    }
+
+    private function ifLoginTryToAuthenticate() {
+        if ($this->hasCookiesTryingToLogin()) {
+            $this->triesToLoginUserWithCookies();
+        } else if ($this->isTryingToLogIn()) {
+            $this->triesToAuthenticateUser();
+        } else if ($this->isTryingToLogOut()) {
+            $this->triesToLogoutUser();
+        }
+    }
+
+    private function ifTriesLoginOrOutRedirect() {
+        if ($this->layoutView->isLoggingIn() || $this->layoutView->isLoggingOut()) {
+            $this->layoutView->reloadLogin();
         }
     }
 
