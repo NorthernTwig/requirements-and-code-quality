@@ -56,10 +56,7 @@ class LoginController extends BaseController {
     }
 
     private function hasCookiesTryingToLogin() : bool {
-        if ($this->layoutView->hasUsernameCookie() && !$this->layoutView->isLoggingOut()) {
-            return true;
-        }
-        return false;
+        return $this->layoutView->hasUsernameCookie() && !$this->layoutView->isLoggingOut();
     }
 
     private function triesToLoginUserWithCookies() {
@@ -69,17 +66,11 @@ class LoginController extends BaseController {
     }
 
     private function isTryingToLogIn() : bool {
-        if ($this->layoutView->isLoggingIn() && !$this->sessionModel->getIsLoggedIn()) {
-            return true;
-        }
-        return false;
+        return $this->layoutView->isLoggingIn() && !$this->sessionModel->getIsLoggedIn();
     }
 
     private function isTryingToLogOut() : bool {
-        if ($this->layoutView->isLoggingOut() && $this->sessionModel->getIsLoggedIn()) {
-            return true;
-        }
-        return false;
+        return $this->layoutView->isLoggingOut() && $this->sessionModel->getIsLoggedIn();
     }
 
     private function triesToLogoutUser() {
