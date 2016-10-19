@@ -12,8 +12,6 @@ require_once('BaseController.php');
 
 class LoginController extends BaseController {
 
-    // private static $username = '';
-    // private static $password = '';
     private $username;
     private $password;
     private $layoutView;
