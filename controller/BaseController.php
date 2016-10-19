@@ -8,6 +8,11 @@ require_once("model/UsernameModel.php");
 
 class BaseController {
 
+    protected $dal;
+    protected $usernameModel;
+    protected $sessionModel;
+    protected $flashmodel;
+
     public function __construct() {
         $this->sessionModel = new \model\SessionModel();
         $this->flashModel = new \model\FlashModel();
