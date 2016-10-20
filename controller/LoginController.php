@@ -3,11 +3,6 @@
 namespace controller;
 
 require_once('view/LoginView.php');
-require_once('view/GetFlashMessages.php');
-require_once('model/FlashModel.php');
-require_once('model/DAL.php');
-require_once('model/SessionModel.php');
-require_once('view/GetFlashMessages.php');
 require_once('BaseController.php');
 
 class LoginController extends BaseController {
@@ -20,7 +15,9 @@ class LoginController extends BaseController {
     public function __construct() {
         parent::__construct();
         $this->layoutView = new \view\LoginView($this->usernameModel, $this->sessionModel);
+    }
 
+    public function loginInit() {
         try {
 
             $this->ifLoginTryToAuthenticate();

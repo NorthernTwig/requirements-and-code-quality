@@ -2,8 +2,7 @@
 
 namespace view;
 
-require_once("GetFlashMessages.php");
-require_once("model/UserModel.php");
+require_once('GetFlashMessages.php');
 require_once('LayoutView.php');
 
 class RegisterView {
@@ -52,6 +51,10 @@ class RegisterView {
 				</fieldset>
 			</form>
 		';
+	}
+
+	public function shouldRenderRegister() {
+		return isset($_GET['register']);
 	}
 
 	public function redirectToLogin() {

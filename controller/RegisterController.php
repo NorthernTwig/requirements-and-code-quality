@@ -3,10 +3,7 @@
 namespace controller;
 
 require_once('view/RegisterView.php');
-require_once('model/FlashModel.php');
-require_once('model/SessionModel.php');
 require_once('BaseController.php');
-require_once('model/DAL.php');
 require_once('model/UserModel.php');
 
 class RegisterController extends BaseController {
@@ -21,7 +18,9 @@ class RegisterController extends BaseController {
         parent::__construct();
         $this->registerView = new \view\RegisterView($this->usernameModel, $this->sessionModel);
         $this->flashModel->resetMessageFromCredentials();
+    }
 
+    public function registerInit() {
         try {
 
             $this->triesRegisterWithCredentials();
@@ -43,6 +42,10 @@ class RegisterController extends BaseController {
         } finally {
             $this->registerView->registerToLayoutView($this->flashModel, $this->sessionModel);
         }
+    }
+
+    public function getShouldRenderRegister() {
+        return $this->registerView->shouldRenderRegister();
     }
 
     private function triesRegisterWithCredentials() {

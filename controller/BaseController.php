@@ -2,9 +2,10 @@
 
 namespace controller;
 
-require_once("model/FlashModel.php");
-require_once("model/SessionModel.php");
-require_once("model/UsernameModel.php");
+require_once('model/FlashModel.php');
+require_once('model/SessionModel.php');
+require_once('model/UsernameModel.php');
+require_once('model/DAL.php');
 
 class BaseController {
 

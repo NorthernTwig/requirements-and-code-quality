@@ -4,7 +4,6 @@ namespace view;
 
 require_once('LayoutView.php');
 require_once('GetFlashMessages.php');
-require_once('model/FlashModel.php');
 require_once('exceptions/NoUsernameException.php');
 require_once('exceptions/NoPasswordException.php');
 

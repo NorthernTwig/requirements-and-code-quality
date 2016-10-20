@@ -2,25 +2,27 @@
 
 namespace controller;
 
-require_once("LoginController.php");
-require_once("RegisterController.php");
+require_once('LoginController.php');
+require_once('RegisterController.php');
 
 class RoutingController {
 
-    private $isRegisterView;
+    private $registerController;
+    private $loginController;
 
     public function __construct() {
-        $this->isRegisterView = isset($_GET['register']);
+        $this->registerController = new RegisterController();
+        $this->loginController = new LoginController();
         $this->route();
     }
-    
+
     private function route() {
-        switch ($this->isRegisterView) {
+        switch ($this->registerController->getShouldRenderRegister()) {
             case false:
-                new LoginController();
+                $this->loginController->loginInit();
                 break;
             case true:
-                new RegisterController();
+                $this->registerController->registerInit();
                 break;
         }
     }
